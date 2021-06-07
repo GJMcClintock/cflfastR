@@ -4,7 +4,6 @@
 #' **CFBD Games Endpoint Overview**
 #' @description Get results, statistics and information for games\cr
 #' \describe{
-#'   \item{`cfbd_game_box_advanced()`:}{ Get game advanced box score information.}
 #'   \item{`cfbd_game_player_stats()`:}{ Get results information from games.}
 #'   \item{`cfl_game_team_stats()`:}{ Get team statistics by game.}
 #'   \item{`cfl_game_info()`:}{ Get results information from games.}
@@ -60,6 +59,8 @@ NULL
 #' @param year (\emph{Integer} required): Year, 4 digit format(\emph{YYYY})
 #' @param game_id (\emph{Integer} optional): Game ID filter for querying a single game - also requires a season
 #'
+#'
+#'
 #' @return [cfl_game_info()] - A data frame with 14 variables:
 #' \describe{
 #'   \item{`game_id`: integer.}{Referencing game id.}
@@ -92,9 +93,33 @@ NULL
 #'   cfl_game_info(2019, 2552)
 
 #' }
-cfl_game_info <- function(season = NA, game_id = NA) {
+cfl_game_info <- function(season = NA,  week = NA, team = NA, event_type = NA, game_id = NA) {
+  # Check if year is numeric
+  assertthat::assert_that(is.numeric(season) & nchar(season) == 4,
+     msg = "Enter valid season as a number (YYYY)"
+  )
+
+  if (!is.na(week)) {
+    # Check if week is numeric, if not NULL
+    assertthat::assert_that(is.numeric(week) & nchar(week) <= 2,
+      msg = "Enter valid week as number"
+    )
+  }
+  if (!is.na(team)) {
+    # Check if team is appropriate, if not NULL
+    assertthat::assert_that(team %in% c("BC", "CGY", "EDM", "HAM", "MTL", "OTT", "SSK","TOR", "WPG"),
+       msg = "Enter valid team abbreviation: BC, CGY, EDM, HAM, MTL, OTT, SSK, TOR, WPG"
+    )
+  }
+  if (!is.na(event_type)) {
+    # Check if season type is appropriate, if not NULL
+    assertthat::assert_that(event_type %in% c("Preseason", "Regular Season", "Playoffs", "Grey Cup", "Exhibition"),
+                            msg = "Enter valid season_type: Preseason, Regular Season, Playoffs, Grey Cup, Exhibition"
+    )
+  }
+
   if (is.na(season)) {
-    stop("A season year is required to find game_id data", call. = FALSE)
+    stop("A season year is required to find game_id data",call. = FALSE)
   } else if (!is.na(season) && is.na(game_id)) {
     url <- paste0('http://api.cfl.ca/v1', '/games/',
                   season)
@@ -104,12 +129,11 @@ cfl_game_info <- function(season = NA, game_id = NA) {
   }
 
   url <- build_url(url)
-
   games_call <- httr::GET(url)
   httr::stop_for_status(games_call)
   games_data_JSON <- httr::content(games_call)
   if(length(games_call) == 0) {
-    games_data <- dplyr::tbl_df()
+    games_data <- data.frame()
   } else {
     games_data <- dplyr::bind_rows(
       lapply(1:length(games_data_JSON$data),
@@ -117,6 +141,18 @@ cfl_game_info <- function(season = NA, game_id = NA) {
       )
     )
   }
+
+  if (!is.na(week)) {
+    games_data <- filter(.data=games_data, games_data$week == !!week)
+  }
+  if (!is.na(team)) {
+    games_data <- filter(.data=games_data, games_data$home_team == team | games_data$away_team == team)
+
+  }
+  if (!is.na(event_type)) {
+    games_data <- filter(.data=games_data, games_data$event_type == !!event_type)
+  }
+
 
   if (nrow(games_data) == 0) {
     # stop("No data found", call. = FALSE)
@@ -174,216 +210,6 @@ cfl_calendar <- function(year,
     },
     error = function(e) {
         message(glue::glue("{Sys.time()}:Invalid arguments or no calendar data available!"))
-    },
-    warning = function(w) {
-    },
-    finally = {
-    }
-  )
-  return(df)
-}
-#' @title
-#' **Get game advanced box score information.**
-#' @param game_id (\emph{Integer} required): Game ID filter for querying a single game
-#' Can be found using the [cfbd_game_info()] function
-#' @param long (\emph{Logical} default `FALSE`): Return the data in a long format.
-#' @param verbose Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function
-#' @return [cfbd_game_box_advanced()] - A data frame with 2 rows and 69 variables:
-#' \describe{
-#'   \item{`team`: character.}{Team name.}
-#'   \item{`plays`: double.}{Number of plays.}
-#'   \item{`ppa_overall_total`: double.}{Predicted points added (PPA) overall total.}
-#'   \item{`ppa_overall_quarter1`: double.}{Predicted points added (PPA) overall Q1.}
-#'   \item{`ppa_overall_quarter2`: double.}{Predicted points added (PPA) overall Q2.}
-#'   \item{`ppa_overall_quarter3`: double.}{Predicted points added (PPA) overall Q3.}
-#'   \item{`ppa_overall_quarter4`: double.}{Predicted points added (PPA) overall Q4.}
-#'   \item{`ppa_passing_total`: double.}{Passing predicted points added (PPA) total.}
-#'   \item{`ppa_passing_quarter1`: double.}{Passing predicted points added (PPA) Q1.}
-#'   \item{`ppa_passing_quarter2`: double.}{Passing predicted points added (PPA) Q2.}
-#'   \item{`ppa_passing_quarter3`: double.}{Passing predicted points added (PPA) Q3.}
-#'   \item{`ppa_passing_quarter4`: double.}{Passing predicted points added (PPA) Q4.}
-#'   \item{`ppa_rushing_total`: double.}{Rushing predicted points added (PPA) total.}
-#'   \item{`ppa_rushing_quarter1`: double.}{Rushing predicted points added (PPA) Q1.}
-#'   \item{`ppa_rushing_quarter2`: double.}{Rushing predicted points added (PPA) Q2.}
-#'   \item{`ppa_rushing_quarter3`: double.}{Rushing predicted points added (PPA) Q3.}
-#'   \item{`ppa_rushing_quarter4`: double.}{Rushing predicted points added (PPA) Q4.}
-#'   \item{`cumulative_ppa_plays`: double.}{Cumulative predicted points added (PPA) added total.}
-#'   \item{`cumulative_ppa_overall_total`: double.}{Cumulative predicted points added (PPA) total.}
-#'   \item{`cumulative_ppa_overall_quarter1`: double.}{Cumulative predicted points added (PPA) Q1.}
-#'   \item{`cumulative_ppa_overall_quarter2`: double.}{Cumulative predicted points added (PPA) Q2.}
-#'   \item{`cumulative_ppa_overall_quarter3`: double.}{Cumulative predicted points added (PPA) Q3.}
-#'   \item{`cumulative_ppa_overall_quarter4`: double.}{Cumulative predicted points added (PPA) Q4.}
-#'   \item{`cumulative_ppa_passing_total`: double.}{Cumulative passing predicted points added (PPA) total.}
-#'   \item{`cumulative_ppa_passing_quarter1`: double.}{Cumulative passing predicted points added (PPA) Q1.}
-#'   \item{`cumulative_ppa_passing_quarter2`: double.}{Cumulative passing predicted points added (PPA) Q2.}
-#'   \item{`cumulative_ppa_passing_quarter3`: double.}{Cumulative passing predicted points added (PPA) Q3.}
-#'   \item{`cumulative_ppa_passing_quarter4`: double.}{Cumulative passing predicted points added (PPA) Q4.}
-#'   \item{`cumulative_ppa_rushing_total`: double.}{Cumulative rushing predicted points added (PPA) total.}
-#'   \item{`cumulative_ppa_rushing_quarter1`: double.}{Cumulative rushing predicted points added (PPA) Q1.}
-#'   \item{`cumulative_ppa_rushing_quarter2`: double.}{Cumulative rushing predicted points added (PPA) Q2.}
-#'   \item{`cumulative_ppa_rushing_quarter3`: double.}{Cumulative rushing predicted points added (PPA) Q3.}
-#'   \item{`cumulative_ppa_rushing_quarter4`: double.}{Cumulative rushing predicted points added (PPA) Q4.}
-#'   \item{`success_rates_overall_total`: double.}{Success rates overall total.}
-#'   \item{`success_rates_overall_quarter1`: double.}{Success rates overall Q1.}
-#'   \item{`success_rates_overall_quarter2`: double.}{Success rates overall Q2.}
-#'   \item{`success_rates_overall_quarter3`: double.}{Success rates overall Q3.}
-#'   \item{`success_rates_overall_quarter4`: double.}{Success rates overall Q4.}
-#'   \item{`success_rates_standard_downs_total`: double.}{Success rates standard downs total.}
-#'   \item{`success_rates_standard_downs_quarter1`: double.}{Success rates standard downs Q1.}
-#'   \item{`success_rates_standard_downs_quarter2`: double.}{Success rates standard downs Q2.}
-#'   \item{`success_rates_standard_downs_quarter3`: double.}{Success rates standard downs Q3.}
-#'   \item{`success_rates_standard_downs_quarter4`: double.}{Success rates standard downs Q4.}
-#'   \item{`success_rates_passing_downs_total`: double.}{Success rates passing downs total.}
-#'   \item{`success_rates_passing_downs_quarter1`: double.}{Success rates passing downs Q1.}
-#'   \item{`success_rates_passing_downs_quarter2`: double.}{Success rates passing downs Q2.}
-#'   \item{`success_rates_passing_downs_quarter3`: double.}{Success rates passing downs Q3.}
-#'   \item{`success_rates_passing_downs_quarter4`: double.}{Success rates passing downs Q4.}
-#'   \item{`explosiveness_overall_total`: double.}{Explosiveness rates overall total.}
-#'   \item{`explosiveness_overall_quarter1`: double.}{Explosiveness rates overall Q1.}
-#'   \item{`explosiveness_overall_quarter2`: double.}{Explosiveness rates overall Q2.}
-#'   \item{`explosiveness_overall_quarter3`: double.}{Explosiveness rates overall Q3.}
-#'   \item{`explosiveness_overall_quarter4`: double.}{Explosiveness rates overall Q4.}
-#'   \item{`rushing_power_success`: double.}{Rushing power success rate.}
-#'   \item{`rushing_stuff_rate`: double.}{Rushing stuff rate.}
-#'   \item{`rushing_line_yds`: double.}{Rushing offensive line yards.}
-#'   \item{`rushing_line_yds_avg`: double.}{Rushing line yards average.}
-#'   \item{`rushing_second_lvl_yds`: double.}{Rushing second-level yards.}
-#'   \item{`rushing_second_lvl_yds_avg`: double.}{Average second level yards per rush.}
-#'   \item{`rushing_open_field_yds`: double.}{Rushing open field yards.}
-#'   \item{`rushing_open_field_yds_avg`: double.}{Average rushing open field yards average.}
-#'   \item{`havoc_total`: double.}{Total havoc rate.}
-#'   \item{`havoc_front_seven`: double.}{Front-7 players havoc rate.}
-#'   \item{`havoc_db`: double.}{Defensive back players havoc rate.}
-#'   \item{`scoring_opps_opportunities`: double.}{Number of scoring opportunities.}
-#'   \item{`scoring_opps_points`: double.}{Points on scoring opportunity drives.}
-#'   \item{`scoring_opps_pts_per_opp`: double.}{Points per scoring opportunity drives.}
-#'   \item{`field_pos_avg_start`: double.}{Average starting field position.}
-#'   \item{`field_pos_avg_starting_predicted_pts`: double.}{Average starting predicted points (PP) for the average starting field position.}
-#' }
-#' @source \url{https://api.collegefootballdata.com/game/box/advanced}
-#' @keywords Game Advanced Box Score
-#' @importFrom tibble enframe
-#' @importFrom jsonlite fromJSON
-#' @importFrom httr GET RETRY
-#' @importFrom utils URLencode URLdecode
-#' @importFrom assertthat assert_that
-#' @importFrom glue glue
-#' @importFrom stringr str_detect
-#' @import dplyr
-#' @import tidyr
-#' @import purrr
-#' @export
-#' @examples
-#' \donttest{
-#'  cfbd_game_box_advanced(game_id = 401114233)
-#' }
-#'
-
-cfbd_game_box_advanced <- function(game_id, long = FALSE,
-                                   verbose = FALSE) {
-  if (!is.null(game_id)) {
-    # Check if game_id is numeric, if not NULL
-    assertthat::assert_that(is.numeric(game_id),
-      msg = "Enter valid game_id (numeric value)"
-    )
-  }
-
-  base_url <- "https://api.collegefootballdata.com/game/box/advanced?"
-
-  full_url <- paste0(
-    base_url,
-    "gameId=", game_id
-  )
-
-  # Check for CFBD API key
-  if (!has_cfbd_key()) stop("CollegeFootballData.com now requires an API key.", "\n       See ?register_cfbd for details.", call. = FALSE)
-
-  # Create the GET request and set response as res
-  res <- httr::RETRY(
-    "GET", full_url,
-    httr::add_headers(Authorization = paste("Bearer", cfbd_key()))
-  )
-
-  # Check the result
-  check_status(res)
-
-  df <- data.frame()
-  tryCatch(
-    expr = {
-      # Get the content, tidyr::unnest, and return result as data.frame
-      df <- res %>%
-        httr::content(as = "text", encoding = "UTF-8") %>%
-        jsonlite::fromJSON(flatten = TRUE) %>%
-        furrr::future_map_if(is.data.frame, list) %>%
-        furrr::future_map_if(is.data.frame, list)
-
-      df <- tibble::enframe(unlist(df$teams, use.names = TRUE))
-      team1 <- seq(1, nrow(df) - 1, by = 2)
-      df1 <- df[team1, ] %>%
-        dplyr::rename(
-          stat = .data$name,
-          team1 = .data$value
-        )
-
-      team2 <- seq(2, nrow(df), by = 2)
-      df2 <- df[team2, ] %>%
-        dplyr::rename(team2 = .data$value) %>%
-        dplyr::select(.data$team2)
-
-      df <- data.frame(cbind(df1, df2))
-      df$stat <- substr(df$stat, 1, nchar(df$stat) - 1)
-      df$stat <- sub(".overall.", "_overall_", df$stat)
-      df$stat <- sub("Downs.", "_downs_", df$stat)
-      df$stat <- sub("Rates.", "_rates_", df$stat)
-      df$stat <- sub("Rate", "_rate", df$stat)
-      df$stat <- sub(".passing.", "_passing_", df$stat)
-      df$stat <- sub(".rushing.", "_rushing_", df$stat)
-      df$stat <- sub("rushing.", "rushing_", df$stat)
-      df$stat <- sub("rushing.", "rushing_", df$stat)
-      df$stat <- sub("fieldPosition.", "field_pos_", df$stat)
-      df$stat <- sub("lineYards", "line_yds", df$stat)
-      df$stat <- sub("secondLevelYards", "second_lvl_yds", df$stat)
-      df$stat <- sub("openFieldYards", "open_field_yds", df$stat)
-      df$stat <- sub("Success", "_success", df$stat)
-      df$stat <- sub("scoringOpportunities.", "scoring_opps_", df$stat)
-      df$stat <- sub("pointsPerOpportunity", "pts_per_opp", df$stat)
-      df$stat <- sub("Seven", "_seven", df$stat)
-      df$stat <- sub("havoc.", "havoc_", df$stat)
-      df$stat <- sub(".Average", "_avg", df$stat)
-      df$stat <- sub("averageStartingPredictedPoints", "avg_starting_predicted_pts", df$stat)
-      df$stat <- sub("averageStart", "avg_start", df$stat)
-      df$stat <- sub(".team", "_team", df$stat)
-      df$stat <- sub(".plays", "_plays", df$stat)
-      df$stat <- sub("cumulativePpa", "cumulative_ppa", df$stat)
-
-      if (!long) {
-        team <- df %>%
-          dplyr::filter(.data$stat == "ppa_team") %>%
-          tidyr::pivot_longer(cols = c(.data$team1, .data$team2)) %>%
-          dplyr::transmute(team = .data$value)
-
-        df <- df %>%
-          dplyr::filter(!stringr::str_detect(.data$stat, "team")) %>%
-          tidyr::pivot_longer(cols = c(.data$team1, .data$team2)) %>%
-          tidyr::pivot_wider(names_from = .data$stat, values_from = .data$value) %>%
-          dplyr::select(-.data$name) %>%
-          dplyr::mutate_all(as.numeric) %>%
-          dplyr::bind_cols(team)  %>%
-          dplyr::select(.data$team, tidyr::everything()) %>%
-          as.data.frame()
-        df <- df %>%
-          dplyr::rename(
-            rushing_line_yds_avg = .data$rushing_line_yd_avg,
-            rushing_second_lvl_yds_avg = .data$rushing_second_lvl_yd_avg,
-            rushing_open_field_yds_avg = .data$rushing_open_field_yd_avg)
-      }
-
-      if(verbose){
-        message(glue::glue("{Sys.time()}: Scraping game advanced box score data for game_id '{game_id}'..."))
-      }
-    },
-    error = function(e) {
-        message(glue::glue("{Sys.time()}: game_id '{game_id}' invalid or no game advanced box score data available!"))
     },
     warning = function(w) {
     },
@@ -876,32 +702,60 @@ cfbd_game_records <- function(year,
 #'   cfbd_game_team_stats(2013, team = "Florida State")
 #' }
 
-cfl_game_team_stats <- function(season = NA, game_id = NA) {
-  if (is.na(season)) {
-    stop("A season year is required", call. = FALSE)
-  } else if (!is.na(season) && is.na(game_id)) {
-    stop('A game_id is required', call. = FALSE)
+cfl_game_team_stats <- function(season = NA, game_id = NA, week = NA, team = NA, event_type = NA) {
+  assertthat::assert_that(is.numeric(season) & nchar(season) == 4,
+                          msg = "Enter valid season as a number (YYYY)"
+  )
+
+  if (!is.na(week)) {
+    # Check if week is numeric, if not NULL
+    assertthat::assert_that(is.numeric(week) & nchar(week) <= 2,
+                            msg = "Enter valid week as number"
+    )
+  }
+  if (!is.na(team)) {
+    # Check if team is appropriate, if not NULL
+    assertthat::assert_that(team %in% c("BC", "CGY", "EDM", "HAM", "MTL", "OTT", "SSK","TOR", "WPG"),
+                            msg = "Enter valid team abbreviation: BC, CGY, EDM, HAM, MTL, OTT, SSK, TOR, WPG"
+    )
+  }
+  if (!is.na(event_type)) {
+    # Check if season type is appropriate, if not NULL
+    assertthat::assert_that(event_type %in% c("Preseason", "Regular Season", "Playoffs", "Grey Cup", "Exhibition"),
+                            msg = "Enter valid season_type: Preseason, Regular Season, Playoffs, Grey Cup, Exhibition"
+    )
+  }
+
+  if(!is.na(game_id)) {
+    ids <- c(game_id)
   } else {
+    fetch_games <- cfl_game_info(season = season, week = week, team = team, event_type = event_type)
+    ids <- fetch_games$game_id
+  }
+
+    boxscores <- data.frame()
+  for (game_id in ids) {
     url <- paste0('http://api.cfl.ca/v1', '/games/', season,
-                  '/game/', game_id, '?include=boxscore')
+                   '/game/', game_id, '?include=boxscore')
+
+    url <- build_url(url)
+    games_call <- GET(url)
+    games_data_JSON <- content(games_call)
+
+    boxscore_JSON <- games_data_JSON$data[[1]]
+
+    if(length(games_call) == 0) {
+      boxscore_data <- data.frame()
+    } else {
+      boxscore_data <- flatten_boxscore(boxscore_JSON)
+    }
+    boxscores <- bind_rows(boxscores, boxscore_data)
+
   }
-
-  url <- build_url(url)
-  games_call <- GET(url)
-  games_data_JSON <- content(games_call)
-
-  boxscore_JSON <- games_data_JSON$data[[1]]
-
-  if(length(games_call) == 0) {
-    boxscore_data <- data.frame()
-  } else {
-    boxscore_data <- flatten_boxscore(boxscore_JSON)
-  }
-
-  if (nrow(boxscore_data) == 0) {
-    stop("No data found", call. = FALSE)
-    NULL
-  } else {
-    boxscore_data
-  }
+    if (nrow(boxscores) == 0) {
+      stop("No data found", call. = FALSE)
+      NULL
+    } else {
+      boxscores
+    }
 }

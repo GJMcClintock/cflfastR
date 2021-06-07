@@ -7,7 +7,7 @@
 \url{http://api.cfl.ca/v1/games/}
 }
 \usage{
-cfl_game_info(season = NA, game_id = NA)
+cfl_game_info(season = NA, week = NA, team = NA, event_type = NA, game_id = NA)
 }
 \arguments{
 \item{game_id}{(\emph{Integer} optional): Game ID filter for querying a single game - also requires a season}

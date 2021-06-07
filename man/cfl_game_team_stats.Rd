@@ -7,19 +7,25 @@
 \url{https://api.collegefootballdata.com/games/teams}
 }
 \usage{
-cfl_game_team_stats(season = NA, game_id = NA)
+cfl_game_team_stats(
+  season = NA,
+  game_id = NA,
+  week = NA,
+  team = NA,
+  event_type = NA
+)
 }
 \arguments{
 \item{game_id}{(\emph{Integer} optional): Game ID filter for querying a single game\cr
 Can be found using the \code{\link[=cfbd_game_info]{cfbd_game_info()}} function}
 
-\item{year}{(\emph{Integer} required): Year, 4 digit format (\emph{YYYY})}
-
 \item{week}{(\emph{Integer} optional): Week - values range from 1-15, 1-14 for seasons pre-playoff, i.e. 2013 or earlier}
 
-\item{season_type}{(\emph{String} default: regular): Select Season Type - regular, postseason, or both}
-
 \item{team}{(\emph{String} optional): D-I Team}
+
+\item{year}{(\emph{Integer} required): Year, 4 digit format (\emph{YYYY})}
+
+\item{season_type}{(\emph{String} default: regular): Select Season Type - regular, postseason, or both}
 
 \item{conference}{(\emph{String} optional): Conference abbreviation - Select a valid FBS conference\cr
 Conference abbreviations P5: ACC, B12, B1G, SEC, PAC\cr

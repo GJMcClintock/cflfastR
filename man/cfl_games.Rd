@@ -6,7 +6,6 @@
 \description{
 Get results, statistics and information for games\cr
 \describe{
-\item{\code{cfbd_game_box_advanced()}:}{ Get game advanced box score information.}
 \item{\code{cfbd_game_player_stats()}:}{ Get results information from games.}
 \item{\code{cfl_game_team_stats()}:}{ Get team statistics by game.}
 \item{\code{cfl_game_info()}:}{ Get results information from games.}
