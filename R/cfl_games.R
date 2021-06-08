@@ -701,6 +701,8 @@ cfbd_game_records <- function(year,
 #'
 #'   cfbd_game_team_stats(2013, team = "Florida State")
 #' }
+#'
+#'
 
 cfl_game_team_stats <- function(season = NA, game_id = NA, week = NA, team = NA, event_type = NA) {
   assertthat::assert_that(is.numeric(season) & nchar(season) == 4,
@@ -730,28 +732,11 @@ cfl_game_team_stats <- function(season = NA, game_id = NA, week = NA, team = NA,
     ids <- c(game_id)
   } else {
     fetch_games <- cfl_game_info(season = season, week = week, team = team, event_type = event_type)
-    ids <- fetch_games$game_id
   }
 
-    boxscores <- data.frame()
-  for (game_id in ids) {
-    url <- paste0('http://api.cfl.ca/v1', '/games/', season,
-                   '/game/', game_id, '?include=boxscore')
+  hold_df <- purrr::map2_dfr(fetch_games$game_id, fetch_games$season, game_to_box)
+  boxscores <- flatten_boxscore(hold_df)
 
-    url <- build_url(url)
-    games_call <- GET(url)
-    games_data_JSON <- content(games_call)
-
-    boxscore_JSON <- games_data_JSON$data[[1]]
-
-    if(length(games_call) == 0) {
-      boxscore_data <- data.frame()
-    } else {
-      boxscore_data <- flatten_boxscore(boxscore_JSON)
-    }
-    boxscores <- bind_rows(boxscores, boxscore_data)
-
-  }
     if (nrow(boxscores) == 0) {
       stop("No data found", call. = FALSE)
       NULL

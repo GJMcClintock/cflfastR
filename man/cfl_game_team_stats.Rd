@@ -127,6 +127,8 @@ Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC\
 
   cfbd_game_team_stats(2013, team = "Florida State")
 }
+
+
 }
 \keyword{Game}
 \keyword{Stats}
