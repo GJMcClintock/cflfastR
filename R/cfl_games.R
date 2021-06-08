@@ -1,13 +1,13 @@
 #' @name cfl_games
 #' @aliases cfl_games
 #' @title
-#' **CFBD Games Endpoint Overview**
+#' **CFL Games Endpoint Overview**
 #' @description Get results, statistics and information for games\cr
 #' \describe{
-#'   \item{`cfbd_game_player_stats()`:}{ Get results information from games.}
+#'   \item{`cfl_game_player_stats()`:}{ Get results information from games.}
 #'   \item{`cfl_game_team_stats()`:}{ Get team statistics by game.}
 #'   \item{`cfl_game_info()`:}{ Get results information from games.}
-#'   \item{`cfbd_game_records()`:}{ Get team records by year.}
+#'   \item{`cfl_game_records()`:}{ Get team records by year.}
 #'   \item{`cfl_calendar()`:}{ Get calendar of weeks by season.}
 #' }
 #' @details
@@ -108,7 +108,7 @@ cfl_game_info <- function(season = NA,  week = NA, team = NA, event_type = NA, g
   if (!is.na(team)) {
     # Check if team is appropriate, if not NULL
     assertthat::assert_that(team %in% c("BC", "CGY", "EDM", "HAM", "MTL", "OTT", "SSK","TOR", "WPG"),
-       msg = "Enter valid team abbreviation: BC, CGY, EDM, HAM, MTL, OTT, SSK, TOR, WPG"
+       msg = "Enter valid team abbreviation, use cfl_teams() to find abbreviations by year"
     )
   }
   if (!is.na(event_type)) {
@@ -236,7 +236,7 @@ cfl_calendar <- function(year,
 #' Can be found using the [cfbd_game_info()] function
 #' @param verbose Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function
 #'
-#' @return [cfbd_game_player_stats()] - A data frame with 32 variables:
+#' @return [cfl_game_player_stats()] - A data frame with 32 variables:
 #' \describe{
 #'   \item{`game_id`: integer.}{Referencing game id.}
 #'   \item{`team`: character.}{Team name.}
@@ -290,161 +290,37 @@ cfl_calendar <- function(year,
 #'   cfbd_game_player_stats(2013, week = 1, team = "Florida State", category = "passing")
 #' }
 
-cfbd_game_player_stats <- function(year,
-                                   week = NULL,
-                                   season_type = "regular",
-                                   team = NULL,
-                                   conference = NULL,
-                                   category = NULL,
-                                   game_id = NULL,
-                                   verbose = FALSE) {
-
-  stat_categories <- c(
-    "passing", "receiving", "rushing", "defensive", "fumbles",
-    "interceptions", "punting", "puntReturns", "kicking", "kickReturns"
+cfl_game_player_stats_test <- function(season = NA, game_id = NA, week = NA, team = NA, event_type = NA) {
+  assertthat::assert_that(is.numeric(season) & nchar(season) == 4,
+                          msg = "Enter valid season as a number (YYYY)"
   )
 
-  args <- list(year, week, season_type, team, conference, category, game_id)
-
-  args <- args[lengths(args) != 0]
-
-  # Check if year is numeric
-  assertthat::assert_that(is.numeric(year) & nchar(year) == 4,
-    msg = "Enter valid year as a number (YYYY)"
-  )
-  if (!is.null(week)) {
+  if (!is.na(week)) {
     # Check if week is numeric, if not NULL
     assertthat::assert_that(is.numeric(week) & nchar(week) <= 2,
-      msg = "Enter valid week 1-15\n(14 for seasons pre-playoff, i.e. 2014 or earlier)"
+                            msg = "Enter valid week as number"
     )
   }
-  if (season_type != "regular") {
-    # Check if season_type is appropriate, if not regular
-    assertthat::assert_that(season_type %in% c("postseason"),
-      msg = "Enter valid season_type: regular, postseason"
+  if (!is.na(team)) {
+    # Check if team is appropriate, if not NULL
+    assertthat::assert_that(team %in% c("BC", "CGY", "EDM", "HAM", "MTL", "OTT", "SSK","TOR", "WPG"),
+                            msg = "Enter valid team abbreviation: BC, CGY, EDM, HAM, MTL, OTT, SSK, TOR, WPG"
     )
   }
-  if (!is.null(team)) {
-    if (team == "San Jose State") {
-      team <- utils::URLencode(paste0("San Jos", "\u00e9", " State"), reserved = TRUE)
-    } else {
-      # Encode team parameter for URL if not NULL
-      team <- utils::URLencode(team, reserved = TRUE)
-    }
-  }
-  if (!is.null(conference)) {
-    # # Check conference parameter in conference abbreviations, if not NULL
-    # assertthat::assert_that(conference %in% cfbfastR::cfbd_conf_types_df$abbreviation,
-    #             msg = "Incorrect conference abbreviation, potential misspelling.\nConference abbreviations P5: ACC, B12, B1G, SEC, PAC\nConference abbreviations G5 and Independents: CUSA, MAC, MWC, Ind, SBC, AAC")
-    # Encode conference parameter for URL, if not NULL
-    conference <- utils::URLencode(conference, reserved = TRUE)
-  }
-  if (!is.null(category)) {
-    # Check category parameter in category if not NULL
-    assertthat::assert_that(category %in% stat_categories,
-      msg = "Incorrect category, potential misspelling.\nOffense: passing, receiving, rushing\nDefense: defensive, fumbles, interceptions\nSpecial Teams: punting, puntReturns, kicking, kickReturns"
-    )
-    # Encode conference parameter for URL, if not NULL
-    category <- utils::URLencode(category, reserved = TRUE)
-  }
-  if (!is.null(game_id)) {
-    # Check if game_id is numeric, if not NULL
-    assertthat::assert_that(is.numeric(game_id),
-      msg = "Enter valid game_id (numeric value)"
+  if (!is.na(event_type)) {
+    # Check if season type is appropriate, if not NULL
+    assertthat::assert_that(event_type %in% c("Preseason", "Regular Season", "Playoffs", "Grey Cup", "Exhibition"),
+                            msg = "Enter valid season_type: Preseason, Regular Season, Playoffs, Grey Cup, Exhibition"
     )
   }
 
-  base_url <- "https://api.collegefootballdata.com/games/players?"
-
-  full_url <- paste0(
-    base_url,
-    "year=", year,
-    "&week=", week,
-    "&seasonType=", season_type,
-    "&team=", team,
-    "&conference=", conference,
-    "&category=", category,
-    "&gameId=", game_id
-  )
-
-  # Check for CFBD API key
-  if (!has_cfbd_key()) stop("CollegeFootballData.com now requires an API key.", "\n       See ?register_cfbd for details.", call. = FALSE)
-
-  # Create the GET request and set response as res
-  res <- httr::RETRY(
-    "GET", full_url,
-    httr::add_headers(Authorization = paste("Bearer", cfbd_key()))
-  )
-
-
-  # Check the result
-  check_status(res)
-
-  cols <- c(
-    "game_id", "team", "conference", "home_away", "points", "category",
-    "athlete_id", "name", "c_att", "yds", "avg", "td", "int", "qbr",
-    "car", "long", "rec", "no", "fg", "pct", "xp", "pts", "tb", "in_20",
-    "fum", "lost", "tot", "solo", "sacks", "tfl", "pd", "qb_hur"
-  )
-  numeric_cols <- c(
-    "yds", "avg", "td", "int", "qbr",
-    "car", "long", "rec", "no", "pct", "pts", "tb", "in_20",
-    "fum", "lost", "tot", "solo", "sacks", "tfl", "pd", "qb_hur"
-  )
-
-  df <- data.frame()
-  tryCatch(
-    expr = {
-      # Get the content, tidyr::unnest, and return result as data.frame
-      df <- res %>%
-        httr::content(as = "text", encoding = "UTF-8") %>%
-        jsonlite::fromJSON(flatten = TRUE) %>%
-        furrr::future_map_if(is.data.frame, list) %>%
-        dplyr::as_tibble() %>%
-        dplyr::rename(game_id = .data$id) %>%
-        tidyr::unnest(.data$teams) %>%
-        furrr::future_map_if(is.data.frame, list) %>%
-        dplyr::as_tibble() %>%
-        tidyr::unnest(.data$categories) %>%
-        furrr::future_map_if(is.data.frame, list) %>%
-        dplyr::as_tibble() %>%
-        dplyr::rename(category = .data$name) %>%
-        tidyr::unnest(.data$types) %>%
-        furrr::future_map_if(is.data.frame, list) %>%
-        dplyr::as_tibble() %>%
-        dplyr::rename(stat_category = .data$name) %>%
-        tidyr::unnest(.data$athletes) %>%
-        dplyr::rename(
-          athlete_id = .data$id,
-          team = .data$school,
-          value = .data$stat
-        ) %>%
-        tidyr::pivot_wider(names_from = .data$stat_category, values_from = .data$value, values_fn = list) %>%
-        janitor::clean_names()
-
-      df[cols[!(cols %in% colnames(df))]] <- NA
-
-      df <- df %>%
-        dplyr::select(cols, dplyr::everything())
-
-      if(verbose){
-        message(glue::glue("{Sys.time()}: Scraping game player stats data..."))
-      }
-    },
-    error = function(e) {
-        message(glue::glue("{Sys.time()}: Invalid arguments or no game player stats data available!"))
-    },
-    warning = function(w) {
-    },
-    finally = {
-    }
-  )
-  # is_c_att_present <- any(grepl("C/ATT",colnames(df)))
-  # if(is_c_att_present){
-  #   df <- df %>%
-  #    dplyr::mutate("C/ATT"="0/0")
-  # }
-  return(df)
+  if(!is.na(game_id)) {
+    ids <- c(game_id)
+  } else {
+    fetch_games <- cfl_game_info(season = season, week = week, team = team, event_type = event_type)
+  }
+  player_game_stats <- purrr::map2_dfr(fetch_games$game_id, fetch_games$season, game_to_player_box)
+  return(player_game_stats)
 }
 
 
@@ -458,7 +334,7 @@ cfbd_game_player_stats <- function(year,
 #' Conference abbreviations P5: ACC, B12, B1G, SEC, PAC\cr
 #' Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC
 #' @param verbose Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function
-#' @return [cfbd_game_records()] - A data frame with 20 variables:
+#' @return [cfl_game_records()] - A data frame with 20 variables:
 #' \describe{
 #'   \item{`year`: integer.}{Season of the games.}
 #'   \item{`team`: character.}{Team name.}
@@ -497,93 +373,27 @@ cfbd_game_player_stats <- function(year,
 #'   cfbd_game_records(2013, team = "Florida State")
 #' }
 
-cfbd_game_records <- function(year,
-                              team = NULL,
-                              conference = NULL,
-                              verbose = FALSE) {
-
-
-  ## check if year is numeric
-  assertthat::assert_that(is.numeric(year) & nchar(year) == 4,
-    msg = "Enter valid year (Integer): 4 digits (YYYY)"
+cfl_game_records <- function(season = NA, team = NA) {
+  # Check if year is numeric
+  assertthat::assert_that(is.numeric(season) & nchar(season) == 4,
+                          msg = "Enter valid season as a number (YYYY)"
   )
 
-  if (!is.null(team)) {
-    if (team == "San Jose State") {
-      team <- utils::URLencode(paste0("San Jos", "\u00e9", " State"), reserved = TRUE)
-    } else {
-      # Encode team parameter for URL if not NULL
-      team <- utils::URLencode(team, reserved = TRUE)
-    }
+  if (!is.na(team)) {
+    # Check if team is appropriate, if not NULL
+    assertthat::assert_that(team %in% c("BC", "CGY", "EDM", "HAM", "MTL", "OTT", "SSK","TOR", "WPG"),
+                            msg = "Enter valid team abbreviation, use cfl_teams() to find abbreviations by year"
+    )
   }
-  if (!is.null(conference)) {
-    # Check conference parameter in conference abbreviations, if not NULL
-    # assertthat::assert_that(conference %in% cfbfastR::cfbd_conf_types_df$abbreviation,
-    #                         msg = "Incorrect conference abbreviation, potential misspelling.\nConference abbreviations P5: ACC, B12, B1G, SEC, PAC\nConference abbreviations G5 and Independents: CUSA, MAC, MWC, Ind, SBC, AAC")
-    # # Encode conference parameter for URL, if not NULL
-    conference <- utils::URLencode(conference, reserved = TRUE)
+  url <- paste0('http://api.cfl.ca/v1', '/standings/',
+                season)
+  url <- build_url(url)
+  standings <- fromJSON(url,  flatten = TRUE)$data
+  standings <- flatten_dfr(map(standings, ~map(.x, ~.x$standings)))
+  if (!is.na(team)) {
+    standings <- filter(.data=standings, standings$abbreviation == team)
   }
-
-  base_url <- "https://api.collegefootballdata.com/records?"
-
-  full_url <- paste0(
-    base_url,
-    "year=", year,
-    "&team=", team,
-    "&conference=", conference
-  )
-
-  # Check for CFBD API key
-  if (!has_cfbd_key()) stop("CollegeFootballData.com now requires an API key.", "\n       See ?register_cfbd for details.", call. = FALSE)
-
-  # Create the GET request and set response as res
-  res <- httr::RETRY(
-    "GET", full_url,
-    httr::add_headers(Authorization = paste("Bearer", cfbd_key()))
-  )
-
-
-  # Check the result
-  check_status(res)
-
-  df <- data.frame()
-  tryCatch(
-    expr = {
-      # Get the content and return it as data.frame
-      df <- res %>%
-        httr::content(as = "text", encoding = "UTF-8") %>%
-        jsonlite::fromJSON(flatten = TRUE) %>%
-        dplyr::rename(
-          total_games = .data$total.games,
-          total_wins = .data$total.wins,
-          total_losses = .data$total.losses,
-          total_ties = .data$total.ties,
-          conference_games = .data$conferenceGames.games,
-          conference_wins = .data$conferenceGames.wins,
-          conference_losses = .data$conferenceGames.losses,
-          conference_ties = .data$conferenceGames.ties,
-          home_games = .data$homeGames.games,
-          home_wins = .data$homeGames.wins,
-          home_losses = .data$homeGames.losses,
-          home_ties = .data$homeGames.ties,
-          away_games = .data$awayGames.games,
-          away_wins = .data$awayGames.wins,
-          away_losses = .data$awayGames.losses,
-          away_ties = .data$awayGames.ties
-        )
-      if(verbose){
-        message(glue::glue("{Sys.time()}: Scraping game records data..."))
-      }
-    },
-    error = function(e) {
-        message(glue::glue("{Sys.time()}: Invalid arguments or no game records data available!"))
-    },
-    warning = function(w) {
-    },
-    finally = {
-    }
-  )
-  return(df)
+  return(standings)
 }
 
 

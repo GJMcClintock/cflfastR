@@ -191,7 +191,7 @@ game_to_box <- function(game_id, season){
                 '/game/', game_id, '?include=boxscore')
 
   url <- build_url(url)
-  flatten_all <- fromJSON(url,  flatten = TRUE)$data
+  flatten_all <- jsonlite::fromJSON(url,  flatten = TRUE)$data
   return(flatten_all)
 }
 
@@ -426,6 +426,96 @@ flatten_boxscore <- function(hold_df) {
     stringsAsFactors = FALSE
   )
   return(dplyr::bind_rows(bind_cols(game_meta, team1),bind_cols(game_meta, team2)))
+}
+
+# Returns player stats for game box scores
+game_to_player_box <- function(game_id = NA, season= NA) {
+  out_df <- data.frame()
+  url <- paste0('http://api.cfl.ca/v1', '/games/', season,
+                '/game/', game_id, '?include=boxscore')
+
+  url <- build_url(url)
+  game_info <- fromJSON(url,  flatten = FALSE)$data
+
+  for (team in c("team_1","team_2")) {
+    game_meta <- data.frame(
+      game_id = game_info$game_id,
+      season = game_info$season,
+      week = game_info$week,
+      date_start = game_info$date_start,
+      team = game_info[[team]]$abbreviation
+    )
+    player_stats <- game_info$boxscore$teams[[team]]$players
+    passing <- player_stats$passing[[1]]
+    passing_players <- passing$player
+    rushing <- player_stats$rushing[[1]]
+    rushing_players <- rushing$player
+    receiving <- player_stats$receiving[[1]]
+    receiving_players <- receiving$player
+    punts <- player_stats$punts[[1]]
+    punts_players <- punts$player
+    punt_returns <- player_stats$punt_returns[[1]]
+    punt_returns_players <- punt_returns$player
+    kick_returns <- player_stats$kick_returns[[1]]
+    kick_returns_players <- kick_returns$player
+    field_goals <- player_stats$field_goals[[1]]
+    field_goals_players <- field_goals$player
+    field_goal_returns <- player_stats$field_goal_returns[[1]]
+    field_goal_returns_players <- field_goal_returns$player
+    kicking <- player_stats$kicking[[1]]
+    kicking_players <- kicking$player
+    one_point_converts <- player_stats$one_point_converts[[1]]
+    one_point_converts_players <- one_point_converts$player
+    two_point_converts <- player_stats$two_point_converts[[1]]
+    two_point_converts_players <- two_point_converts$player
+    defence <- player_stats$defence[[1]]
+    defence_players <- defence$player
+
+    passing <- bind_cols(passing_players,passing)
+    rushing <- bind_cols(rushing_players,rushing)
+    receiving <- bind_cols(receiving_players,receiving)
+    punts <- bind_cols(punts_players,punts)
+    punt_returns <- bind_cols(punt_returns_players,punt_returns)
+    kick_returns <- bind_cols(kick_returns_players,kick_returns)
+    field_goals <- bind_cols(field_goals_players,field_goals)
+    field_goal_returns <- bind_cols(field_goal_returns_players,field_goal_returns)
+    kicking <- bind_cols(kicking_players,kicking)
+    one_point_converts <- bind_cols(one_point_converts_players,one_point_converts)
+    two_point_converts <- bind_cols(two_point_converts_players,two_point_converts)
+    defence <- bind_cols(defence_players,defence)
+
+
+    player_list <- distinct(bind_rows(passing_players, rushing_players, receiving_players, punts_players, punt_returns_players, kick_returns_players,
+                                      field_goals_players, field_goal_returns_players, kicking_players, one_point_converts_players, two_point_converts_players, defence_players))
+    if(length(passing)) {
+      player_game_stats <- left_join(player_list,passing)}
+    if(length(rushing)) {
+      player_game_stats <- left_join(player_game_stats,rushing)}
+    if(length(receiving)) {
+      player_game_stats <- left_join(player_game_stats,receiving)}
+    if(length(punts)) {
+      player_game_stats <- left_join(player_game_stats,punts)}
+    if(length(punt_returns)) {
+      player_game_stats <- left_join(player_game_stats,punt_returns)}
+    if(length(kick_returns)) {
+      player_game_stats <- left_join(player_game_stats,kick_returns)}
+    if(length(field_goals)) {
+      player_game_stats <- left_join(player_game_stats,field_goals)}
+    if(length(field_goal_returns)) {
+      player_game_stats <- left_join(player_game_stats,field_goal_returns)}
+    if(length(kicking)) {
+      player_game_stats <- left_join(player_game_stats,kicking)}
+    if(length(one_point_converts)) {
+      player_game_stats <- left_join(player_game_stats,one_point_converts)}
+    if(length(two_point_converts)) {
+      player_game_stats <- left_join(player_game_stats,two_point_converts)}
+    if(length(defence)) {
+      player_game_stats <- left_join(player_game_stats,defence)}
+    player_game_stats <- subset(player_game_stats, select = -player)
+    hold_df <- bind_cols(game_meta, player_game_stats)
+    out_df <- bind_rows(out_df, hold_df)
+  }
+  return(out_df)
 }
 
 # rule_header <- function(x) {

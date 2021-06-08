@@ -2,14 +2,14 @@
 % Please edit documentation in R/cfl_games.R
 \name{cfl_games}
 \alias{cfl_games}
-\title{\strong{CFBD Games Endpoint Overview}}
+\title{\strong{CFL Games Endpoint Overview}}
 \description{
 Get results, statistics and information for games\cr
 \describe{
-\item{\code{cfbd_game_player_stats()}:}{ Get results information from games.}
+\item{\code{cfl_game_player_stats()}:}{ Get results information from games.}
 \item{\code{cfl_game_team_stats()}:}{ Get team statistics by game.}
 \item{\code{cfl_game_info()}:}{ Get results information from games.}
-\item{\code{cfbd_game_records()}:}{ Get team records by year.}
+\item{\code{cfl_game_records()}:}{ Get team records by year.}
 \item{\code{cfl_calendar()}:}{ Get calendar of weeks by season.}
 }
 }
