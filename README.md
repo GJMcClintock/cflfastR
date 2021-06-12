@@ -43,7 +43,7 @@ devtools::install_github(repo = "gjmcclintock/cflfastR")
  
 #### **CFL API Keys**
 
-The [CollegeFootballData API](https://api.cfl.ca/)
+The [CFL API](https://api.cfl.ca/)
 requires an API key, here’s a quick run-down:
 
   - To get an API key, follow the directions here: [CFL
