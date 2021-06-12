@@ -93,12 +93,12 @@ Sys.setenv(CFL_API_KEY = "XXXX-YOUR-API-KEY-HERE-XXXXX")
 # **Our Authors**
 
   - [Garrett McClintock](https://twitter.com/GJMcClintock)  
-    <a href="https://twitter.com/GJMcClintock" target="blank"><img src="https://img.shields.io/twitter/follow/GJMcClintock?color=blue&label=%40saiemgilani&logo=twitter&style=for-the-badge" alt="@GJMcClintock" /></a>
-    <a href="https://github.com/GJMcClintock" target="blank"><img src="https://img.shields.io/github/followers/GJMcClintock?color=eee&logo=Github&style=for-the-badge" alt="@saiemgilani" /></a>
+    <a href="https://twitter.com/GJMcClintock" target="blank"><img src="https://img.shields.io/twitter/follow/GJMcClintock?color=blue&label=%40GJMcClintock&logo=twitter&style=for-the-badge" alt="@GJMcClintock" /></a>
+    <a href="https://github.com/GJMcClintock" target="blank"><img src="https://img.shields.io/github/followers/GJMcClintock?color=eee&logo=Github&style=for-the-badge" alt="@GJMcClintock" /></a>
 
 # **Special Thanks**
 
-  - [Andrew Dyck] (https://github.com/andrewjdyck)
+  - [Andrew Dyck](https://github.com/andrewjdyck)
   - [Saiem Gilani](https://twitter.com/saiemgilani)  
     <a href="https://twitter.com/saiemgilani" target="blank"><img src="https://img.shields.io/twitter/follow/saiemgilani?color=blue&label=%40saiemgilani&logo=twitter&style=for-the-badge" alt="@saiemgilani" /></a>
     <a href="https://github.com/saiemgilani" target="blank"><img src="https://img.shields.io/github/followers/saiemgilani?color=eee&logo=Github&style=for-the-badge" alt="@saiemgilani" /></a>
