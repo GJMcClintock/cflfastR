@@ -50,7 +50,7 @@ cfl_pbp_fetch <- function(season = NA, game_id = NA) {
     data.frame(cbind(game_data, pbp_data))
   }
 }
-#'#' Query for CFL Play-by_Play information
+#' Query for CFL Play-by_Play information
 #' @param season Required parameter for the football season.
 #' @param game_id Specific Game Id
 #' @param week Week of the season
