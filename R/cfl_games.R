@@ -238,40 +238,85 @@ cfl_calendar <- function(year,
 #'
 #' @return [cfl_game_player_stats()] - A data frame with 32 variables:
 #' \describe{
-#'   \item{`game_id`: integer.}{Referencing game id.}
-#'   \item{`team`: character.}{Team name.}
-#'   \item{`conference`: character.}{Conference of the team.}
-#'   \item{`home_away`: character.}{Flag for if the team was the home or away team.}
-#'   \item{`points`: integer.}{Team points.}
-#'   \item{`category`: character.}{Statistic category.}
-#'   \item{`athlete_id`: character.}{Athlete referencing id.}
-#'   \item{`name`: character.}{Player name.}
-#'   \item{`c_att`: character.}{Completions - Pass attempts.}
-#'   \item{`yds`: double.}{Statistic yardage.}
-#'   \item{`avg`: double.}{Average per statistic.}
-#'   \item{`td`: double.}{Touchdowns scored.}
-#'   \item{`int`: double.}{Interceptions thrown.}
-#'   \item{`qbr`: double.}{Quarterback rating.}
-#'   \item{`car`: double.}{Number of rushing carries.}
-#'   \item{`long`: double.}{Longest carry/reception of the game.}
-#'   \item{`rec`: double.}{Number of pass receptions.}
-#'   \item{`no`: double.}{Player number.}
-#'   \item{`fg`: character.}{Field goal attempts in the game.}
-#'   \item{`pct`: double.}{Field goal percentage in the game.}
-#'   \item{`xp`: character.}{Extra points kicked in the game.}
-#'   \item{`pts`: double.}{Total kicking points in the game.}
-#'   \item{`tb`: double.}{Touchbacks (for kicking) in the game.}
-#'   \item{`in_20`: double.}{Punts inside the 20 yardline in the game.}
-#'   \item{`fum`: double.}{Player fumbles in the game.}
-#'   \item{`lost`: double.}{Player fumbles lost in the game.}
-#'   \item{`tot`: double.}{Total tackles in the game.}
-#'   \item{`solo`: double.}{Solo tackles in the game.}
-#'   \item{`sacks`: double.}{Total sacks in the game.}
-#'   \item{`tfl`: double.}{Total tackles for loss in the game.}
-#'   \item{`pd`: double.}{Total passes defensed in the game.}
-#'   \item{`qb_hur`: double.}{Total quarterback hurries in the game.}
+#'  \item{`game_id` : integer.}{UUID for game}
+#'  \item{`season` : integer.}{Season game played}
+#'  \item{`week` : integer.}{Week of Season}
+#'  \item{`date_start` : character.}{Start date of kickoff}
+#'  \item{`team` : character.}{Player team}
+#'  \item{`cfl_central_id` : integer.}{UUID for player}
+#'  \item{`first_name` : character.}{Player first name}
+#'  \item{`middle_name` : character.}{Player middle name}
+#'  \item{`last_name` : character.}{Player last name}
+#'  \item{`birth_date` : character.}{Player DOB}
+#'  \item{`pass_attempts` : integer.}{Pass Attempts}
+#'  \item{`pass_completions` : integer.}{Pass Completios}
+#'  \item{`pass_net_yards` : integer.}{Net Passing Yards}
+#'  \item{`pass_long` : integer.}{Long Pass}
+#'  \item{`pass_touchdowns` : integer.}{Passing TDs}
+#'  \item{`pass_completion_percentage` : character.}{Completition Percentage}
+#'  \item{`pass_efficiency` : character.}{Pass Efficiency Rating}
+#'  \item{`pass_interceptions` : integer.}{Interceptions Thrown}
+#'  \item{`pass_fumbles` : integer.}{Fumbles while passing}
+#'  \item{`rush_attempts` : integer.}{Rush attempts}
+#'  \item{`rush_net_yards` : integer.}{Net rushing yards}
+#'  \item{`rush_long` : integer.}{Longest rush}
+#'  \item{`rush_touchdowns` : integer.}{Rushing touchdowns}
+#'  \item{`rush_long_touchdowns` : integer.}{Longest rushing TD}
+#'  \item{`receive_attempts` : integer.}{Targets}
+#'  \item{`receive_caught` : integer.}{Receptions}
+#'  \item{`receive_yards` : integer.}{Receiving yards}
+#'  \item{`receive_long` : integer.}{Longest reception}
+#'  \item{`receive_touchdowns` : integer.}{Receiving TDs}
+#'  \item{`receive_long_touchdowns` : integer.}{Long receiving TD}
+#'  \item{`receive_yards_after_catch` : integer.}{Yards After Catch}
+#'  \item{`receive_fumbles` : integer.}{Fumbles after reception}
+#'  \item{`punts` : integer.}{Punts}
+#'  \item{`punt_yards` : integer.}{Punt Yards}
+#'  \item{`punt_net_yards` : integer.}{Net Punt Yards}
+#'  \item{`punt_long` : integer.}{Longest Punt}
+#'  \item{`punt_singles` : integer.}{Punt Singles}
+#'  \item{`punts_blocked` : integer.}{Punts Blocked}
+#'  \item{`punts_in_10` : integer.}{Punts downed inside 10}
+#'  \item{`punts_in_20` : integer.}{Punts downed inside 20}
+#'  \item{`punts_returned` : integer.}{Punts Returns Defended}
+#'  \item{`punt_returns` : integer.}{Received Punts Returns}
+#'  \item{`punt_returns_yards` : integer.}{Punt Return Yards}
+#'  \item{`punt_returns_touchdowns` : integer.}{Punt Return TDs}
+#'  \item{`punt_returns_long` : integer.}{Longest Punt Return}
+#'  \item{`punt_returns_touchdowns_long` : integer.}{Longest Punt Return TD}
+#'  \item{`kick_returns` : integer.}{Kick Returns}
+#'  \item{`kick_returns_yards` : integer.}{Kick returns yards}
+#'  \item{`kick_returns_touchdowns` : integer.}{KR Touchdowns}
+#'  \item{`kick_returns_long` : integer.}{Longest kick return}
+#'  \item{`kick_returns_touchdowns_long` : integer.}{Longest kick return TD}
+#'  \item{`field_goal_attempts` : integer.}{Field goal attempts}
+#'  \item{`field_goal_made` : integer.}{Field goals made}
+#'  \item{`field_goal_yards` : integer.}{Attempt distances}
+#'  \item{`field_goal_singles` : integer.}{Field goal singles}
+#'  \item{`field_goal_long` : integer.}{Longest field goals}
+#'  \item{`field_goal_missed_list` : character.}{List of missing distances}
+#'  \item{`field_goal_points` : integer.}{Points from field goal attempts}
+#'  \item{`kicks` : integer.}{Kickoffs}
+#'  \item{`kick_yards` : integer.}{Kickoff yards}
+#'  \item{`kicks_net_yards` : integer.}{Net kickoff yards}
+#'  \item{`kicks_long` : integer.}{Longest kickoff}
+#'  \item{`kicks_singles` : integer.}{Kickoff singles}
+#'  \item{`kicks_out_of_end_zone` : integer.}{Kicks out of end zone}
+#'  \item{`kicks_onside` : integer.}{Onside kicks}
+#'  \item{`one_point_converts_attempts` : integer.}{XP attempts}
+#'  \item{`one_point_converts_made` : integer.}{XP conversions}
+#'  \item{`tackles_total` : integer.}{2 pt attempts}
+#'  \item{`tackles_defensive` : integer.}{2 pt conversions}
+#'  \item{`tackles_special_teams` : integer.}{Total tackles}
+#'  \item{`sacks_qb_made` : integer.}{Defensive tackles}
+#'  \item{`interceptions` : integer.}{Special teams tackles}
+#'  \item{`fumbles_forced` : integer.}{Sacks made}
+#'  \item{`fumbles_recovered` : integer.}{Interceptions forced}
+#'  \item{`passes_knocked_down` : integer.}{Fumbles forced}
+#'  \item{`fumbles_recovered` : integer.}{Fumble recoveries}
+#'  \item{`passes_knocked_down` : integer.}{Batted passes}
 #' }
-#' @source \url{https://api.collegefootballdata.com/games/players}
+#' @source \url{http://api.cfl.ca/v1/games/?include=playbyplay}
 #' @keywords Game Info
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET RETRY
@@ -285,12 +330,11 @@ cfl_calendar <- function(year,
 #' @export
 #' @examples
 #' \donttest{
-#'   cfbd_game_player_stats(year = 2020, week = 15, team = "Alabama")
+#'   cfl_game_player_stats(year = 2020, week = 15, team = "BC")
 #'
-#'   cfbd_game_player_stats(2013, week = 1, team = "Florida State", category = "passing")
 #' }
 
-cfl_game_player_stats_test <- function(season = NA, game_id = NA, week = NA, team = NA, event_type = NA) {
+cfl_game_player_stats <- function(season = NA, game_id = NA, week = NA, team = NA, event_type = NA) {
   assertthat::assert_that(is.numeric(season) & nchar(season) == 4,
                           msg = "Enter valid season as a number (YYYY)"
   )
@@ -336,28 +380,36 @@ cfl_game_player_stats_test <- function(season = NA, game_id = NA, week = NA, tea
 #' @param verbose Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function
 #' @return [cfl_game_records()] - A data frame with 20 variables:
 #' \describe{
-#'   \item{`year`: integer.}{Season of the games.}
-#'   \item{`team`: character.}{Team name.}
-#'   \item{`conference`: character.}{Conference of the team.}
-#'   \item{`division`: character.}{Division in the conference of the team.}
-#'   \item{`total_games`: integer.}{Total number of games played.}
-#'   \item{`total_wins`: integer.}{Total wins.}
-#'   \item{`total_losses`: integer.}{Total losses.}
-#'   \item{`total_ties`: integer.}{Total ties.}
-#'   \item{`conference_games`: integer.}{Number of conference games.}
-#'   \item{`conference_wins`: integer.}{Total conference wins.}
-#'   \item{`conference_losses`: integer.}{Total conference losses.}
-#'   \item{`conference_ties`: integer.}{Total conference ties.}
-#'   \item{`home_games`: integer.}{Total home games.}
-#'   \item{`home_wins`: integer.}{Total home wins.}
-#'   \item{`home_losses`: integer.}{Total home losses.}
-#'   \item{`home_ties`: integer.}{Total home ties.}
-#'   \item{`away_games`: integer.}{Total away games.}
-#'   \item{`away_wins`: integer.}{Total away wins.}
-#'   \item{`away_losses`: integer.}{Total away losses.}
-#'   \item{`away_ties`: integer.}{Total away ties.}
+#'  \item{`division_id` : integer.}{Division ID}
+#'  \item{`division_name` : character.}{Division Name}
+#'  \item{`place` : integer.}{Place in Division}
+#'  \item{`flags` : character.}{Flags}
+#'  \item{`team_id` : integer.}{Team Id}
+#'  \item{`letter` : character.}{First letter of team abbreviation}
+#'  \item{`abbreviation` : character.}{Team abbreviation}
+#'  \item{`location` : character.}{Team location}
+#'  \item{`nickname` : character.}{Team Mascot}
+#'  \item{`full_name` : character.}{Full name (eg: BC Lions)}
+#'  \item{`games_played` : integer.}{Games Played}
+#'  \item{`wins` : integer.}{Wins}
+#'  \item{`losses` : integer.}{Losses}
+#'  \item{`ties` : integer.}{Ties}
+#'  \item{`points` : integer.}{Points in Standings (2pts for W, 1pt for T)}
+#'  \item{`winning_percentage` : integer.}{Win %: Pts / (Games Played * 2)}
+#'  \item{`points_for` : integer.}{Points Scored}
+#'  \item{`points_against` : integer.}{Points Scored Against}
+#'  \item{`home_wins` : integer.}{Home Wins}
+#'  \item{`home_losses` : integer.}{Home Losses}
+#'  \item{`home_ties` : integer.}{Home Ties}
+#'  \item{`away_wins` : integer.}{Road wins}
+#'  \item{`away_losses` : integer.}{Road losses}
+#'  \item{`away_ties` : integer.}{Road ties}
+#'  \item{`division_wins` : integer.}{Division Wins}
+#'  \item{`division_losses` : integer.}{Division Losses}
+#'  \item{`division_ties` : integer.}{Division Ties}
+#'  \item{`season` : integer.}{Season}
 #' }
-#' @source \url{https://api.collegefootballdata.com/records}
+#' @source \url{https://api.cfl.ca/v1/standings/}
 #' @keywords Team Info
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET RETRY
@@ -368,9 +420,8 @@ cfl_game_player_stats_test <- function(season = NA, game_id = NA, week = NA, tea
 #' @export
 #' @examples
 #' \donttest{
-#'   cfbd_game_records(2018, team = "Notre Dame")
+#'   cfl_game_records(2018, team = "WPG")
 #'
-#'   cfbd_game_records(2013, team = "Florida State")
 #' }
 
 cfl_game_records <- function(season = NA, team = NA) {
@@ -414,84 +465,120 @@ cfl_game_records <- function(season = NA, team = NA) {
 #'
 #' @return [cfl_game_team_stats()] - A data frame with 78 variables:
 #' \describe{
-#'   \item{`game_id`: integer.}{Referencing game id.}
-#'   \item{`school`: character.}{Team name.}
-#'   \item{`conference`: character.}{Conference of the team.}
-#'   \item{`home_away`: character.}{Home/Away Flag.}
-#'   \item{`points`: integer.}{Team points.}
-#'   \item{`total_yards`: character.}{Team total yards.}
-#'   \item{`net_passing_yards`: character.}{Team net passing yards.}
-#'   \item{`completion_attempts`:character.}{Team completion attempts.}
-#'   \item{`passing_tds`: character.}{Team passing touchdowns.}
-#'   \item{`yards_per_pass`: character.}{Team game yards per pass.}
-#'   \item{`passes_intercepted`: character.}{Team passes intercepted.}
-#'   \item{`interception_yards`: character.}{Interception yards.}
-#'   \item{`interception_tds`: character.}{Interceptions returned for a touchdown.}
-#'   \item{`rushing_attempts`: character.}{Team rushing attempts. see also: ESTABLISH IT.}
-#'   \item{`rushing_yards`: character.}{Team rushing yards.}
-#'   \item{`rush_tds`: character.}{Team rushing touchdowns.}
-#'   \item{`yards_per_rush_attempt`: character.}{Team yards per rush attempt.}
-#'   \item{`first_downs`: character.}{First downs earned by the team.}
-#'   \item{`third_down_eff`: character.}{Third down efficiency.}
-#'   \item{`fourth_down_eff`: character.}{Fourth down efficiency.}
-#'   \item{`punt_returns`: character.}{Team punt returns.}
-#'   \item{`punt_return_yards`: character.}{Team punt return yards.}
-#'   \item{`punt_return_tds`: character.}{Team punt return touchdowns.}
-#'   \item{`kick_return_yards`: character.}{Team kick return yards.}
-#'   \item{`kick_return_tds`: character.}{Team kick return touchdowns.}
-#'   \item{`kick_returns`: character.}{Team kick returns.}
-#'   \item{`kicking_points`: character.}{Team points from kicking the ball.}
-#'   \item{`fumbles_recovered`: character.}{Team fumbles recovered.}
-#'   \item{`fumbles_lost`: character.}{Team fumbles lost.}
-#'   \item{`total_fumbles`: character.}{Team total fumbles.}
-#'   \item{`tackles`: character.}{Team tackles.}
-#'   \item{`tackles_for_loss`: character.}{Team tackles for a loss.}
-#'   \item{`sacks`: character.}{Team sacks.}
-#'   \item{`qb_hurries`: character.}{Team QB hurries.}
-#'   \item{`interceptions`: character.}{Team interceptions.}
-#'   \item{`passes_deflected`: character.}{Team passes deflected.}
-#'   \item{`turnovers`: character.}{Team turnovers.}
-#'   \item{`defensive_tds`: character.}{Team defensive touchdowns.}
-#'   \item{`total_penalties_yards`: character.}{Team total penalty yards.}
-#'   \item{`possession_time`: character.}{Team time of possession.}
-#'   \item{`conference_allowed`: character.}{Conference of the opponent team.}
-#'   \item{`home_away_allowed`: character.}{Flag for if the opponent was the home or away team.}
-#'   \item{`points_allowed`: integer.}{Points for the opponent.}
-#'   \item{`total_yards_allowed`: character.}{Opponent total yards.}
-#'   \item{`net_passing_yards_allowed`: character.}{Opponent net passing yards.}
-#'   \item{`completion_attempts_allowed`: character.}{Oppponent completion attempts.}
-#'   \item{`passing_tds_allowed`: character.}{Opponent passing TDs.}
-#'   \item{`yards_per_pass_allowed`: character.}{Opponent yards per pass allowed.}
-#'   \item{`passes_intercepted_allowed`: character.}{Opponent passes intercepted.}
-#'   \item{`interception_yards_allowed`: character.}{Opponent interception yards.}
-#'   \item{`interception_tds_allowed`: character.}{Opponent interception TDs.}
-#'   \item{`rushing_attempts_allowed`: character.}{Opponent rushing attempts.}
-#'   \item{`rushing_yards_allowed`: character.}{Opponent rushing yards.}
-#'   \item{`rush_tds_allowed`: character.}{Opponent rushing touchdownss.}
-#'   \item{`yards_per_rush_attempt_allowed`: character.}{Opponent rushing yards per attempt.}
-#'   \item{`first_downs_allowed`: character.}{Opponent first downs.}
-#'   \item{`third_down_eff_allowed`: character.}{Opponent third down efficiency.}
-#'   \item{`fourth_down_eff_allowed`: character.}{Opponent fourth down efficiency.}
-#'   \item{`punt_returns_allowed`: character.}{Opponent punt returns.}
-#'   \item{`punt_return_yards_allowed`: character.}{Opponent punt return yards.}
-#'   \item{`punt_return_tds_allowed`: character.}{Opponent punt return touchdowns.}
-#'   \item{`kick_return_yards_allowed`: character.}{Opponent kick return yards.}
-#'   \item{`kick_return_tds_allowed`: character.}{Opponent kick return touchdowns.}
-#'   \item{`kick_returns_allowed`: character.}{Opponent kick returns.}
-#'   \item{`kicking_points_allowed`: character.}{Opponent points from kicking.}
-#'   \item{`fumbles_recovered_allowed`: character.}{Opponent fumbles recovered.}
-#'   \item{`fumbles_lost_allowed`: character.}{Opponent fumbles lost.}
-#'   \item{`total_fumbles_allowed`:character.}{Opponent total number of fumbles.}
-#'   \item{`tackles_allowed`:character.}{Opponent tackles.}
-#'   \item{`tackles_for_loss_allowed`: character.}{Opponent tackles for loss.}
-#'   \item{`sacks_allowed`: character.}{Opponent sacks.}
-#'   \item{`qb_hurries_allowed`: character.}{Opponent quarterback hurries.}
-#'   \item{`interceptions_allowed`: character.}{Opponent interceptions.}
-#'   \item{`passes_deflected_allowed`: character.}{Opponent passes deflected.}
-#'   \item{`turnovers_allowed`: character.}{Opponent turnovers.}
-#'   \item{`defensive_tds_allowed`: character.}{Opponent defensive touchdowns.}
-#'   \item{`total_penalties_yards_allowed`: character.}{Opponent total penalty yards.}
-#'   \item{`possession_time_allowed`: character.}{Opponent time of possession.}
+#'  \item{`game_id` : integer.}{UUID of game}
+#'  \item{`date_start` : character.}{Date of kickoff}
+#'  \item{`week` : integer.}{Week of season}
+#'  \item{`season` : integer.}{Season}
+#'  \item{`event_type` : character.}{Event Type (Preseason, Regular Season, Playoffs, Grey Cup)}
+#'  \item{`venue` : character.}{Venue}
+#'  \item{`team` : character.}{Team}
+#'  \item{`home_away` : character.}{Home/Away flag}
+#'  \item{`points_for` : integer.}{Points Scored}
+#'  \item{`points_against` : integer.}{Points Against}
+#'  \item{`time_of_pos` : character.}{Time of Posession}
+#'  \item{`fumbles` : integer.}{Fumbles Lost}
+#'  \item{`int` : integer.}{Interceptions Thrown}
+#'  \item{`downs` : integer.}{Turnovers on Downs}
+#'  \item{`pass_attempts` : integer.}{Pass Attempts}
+#'  \item{`pass_completions` : integer.}{Pass Completions}
+#'  \item{`pass_net_yards` : integer.}{Net Passing Yards}
+#'  \item{`pass_long` : integer.}{Longest pass}
+#'  \item{`pass_touchdowns` : integer.}{Passing TDs}
+#'  \item{`completion_percentage` : character.}{Team completion %}
+#'  \item{`pass_efficiency` : character.}{Team passer rating}
+#'  \item{`pass_interceptions` : integer.}{Interceptions Thrown}
+#'  \item{`pass_fumbles` : integer.}{Fumbles lost while passing}
+#'  \item{`rush_attempts` : integer.}{Rush Attempts}
+#'  \item{`rush_net_yards` : integer.}{Net rushing yards}
+#'  \item{`rush_long` : integer.}{Longest rush}
+#'  \item{`rush_touchdowns` : integer.}{Rushing TDs}
+#'  \item{`rush_long_touchdowns` : integer.}{Longest rushing TD}
+#'  \item{`rec_attempts` : integer.}{Targets}
+#'  \item{`rec_caught` : integer.}{Receptions}
+#'  \item{`rec_yards` : integer.}{Receiving yards}
+#'  \item{`rec_long` : integer.}{Longest reception}
+#'  \item{`rec_touchdowns` : integer.}{Receiving TDs}
+#'  \item{`rec_long_touchdowns` : integer.}{Longest TD Reception}
+#'  \item{`rec_yards_after_catch` : integer.}{Yards after Catch}
+#'  \item{`rec_fumbles` : integer.}{Fumbles after reception}
+#'  \item{`punts` : integer.}{Punts}
+#'  \item{`punt_yards` : integer.}{Punt Yards}
+#'  \item{`punt_net_yards` : integer.}{Net Punt Yards}
+#'  \item{`punt_long` : integer.}{Longest Punt}
+#'  \item{`punt_singles` : integer.}{Punt Singles}
+#'  \item{`punts_blocked` : integer.}{Punts Blocked}
+#'  \item{`punts_in_10` : integer.}{Punts downed inside 10}
+#'  \item{`punts_in_20` : integer.}{Punts downed inside 20}
+#'  \item{`punts_returned` : integer.}{Punts Returns Defended}
+#'  \item{`punt_returns` : integer.}{Received Punts Returns}
+#'  \item{`punt_returns_yards` : integer.}{Punt Return Yards}
+#'  \item{`punt_returns_touchdowns` : integer.}{Punt Return TDs}
+#'  \item{`punt_returns_long` : integer.}{Longest Punt Return}
+#'  \item{`punt_returns_touchdowns_long` : integer.}{Longest Punt Return TD}
+#'  \item{`kick_returns` : integer.}{Kick Returns}
+#'  \item{`kick_returns_yards` : integer.}{Kick returns yards}
+#'  \item{`kick_returns_touchdowns` : integer.}{KR Touchdowns}
+#'  \item{`kick_returns_long` : integer.}{Longest kick return}
+#'  \item{`kick_returns_touchdowns_long` : integer.}{Longest kick return TD}
+#'  \item{`field_goal_attempts` : integer.}{Field goal attempts}
+#'  \item{`field_goal_made` : integer.}{Field goals made}
+#'  \item{`field_goal_yards` : integer.}{Attempt distances}
+#'  \item{`field_goal_singles` : integer.}{Field goal singles}
+#'  \item{`field_goal_long` : integer.}{Longest field goals}
+#'  \item{`field_goal_points` : integer.}{Points from field goal attempts}
+#'  \item{`kicks` : integer.}{Kickoffs}
+#'  \item{`kick_yards` : integer.}{Kickoff yards}
+#'  \item{`kicks_net_yards` : integer.}{Net kickoff yards}
+#'  \item{`kicks_long` : integer.}{Longest kickoff}
+#'  \item{`kicks_singles` : integer.}{Kickoff singles}
+#'  \item{`kicks_out_of_end_zone` : integer.}{Kicks out of end zone}
+#'  \item{`kicks_onside` : integer.}{Onside kicks}
+#'  \item{`one_point_convert_attempts` : integer.}{XP attempts}
+#'  \item{`one_point_convert_made` : integer.}{XP conversions}
+#'  \item{`two_point_convert_attempts` : integer.}{2 pt attempts}
+#'  \item{`two_point_convert_made` : integer.}{2 pt conversions}
+#'  \item{`tackles_total` : integer.}{Total tackles}
+#'  \item{`tackles_defensive` : integer.}{Defensive tackles}
+#'  \item{`tackles_special_teams` : integer.}{Special teams tackles}
+#'  \item{`sacks_qb_made` : integer.}{Sacks made}
+#'  \item{`interceptions` : integer.}{Interceptions forced}
+#'  \item{`fumbles_forced` : integer.}{Fumbles forced}
+#'  \item{`fumbles_recovered` : integer.}{Fumble recoveries}
+#'  \item{`passes_knocked_down` : integer.}{Batted passes}
+#'  \item{`defensive_touchdowns` : integer.}{Defensive TDs}
+#'  \item{`defensive_safeties` : integer.}{Safeties forced}
+#'  \item{`pass_attempts_allowed` : integer.}{Pass Attempts Allowed}
+#'  \item{`pass_completions_allowed` : integer.}{Pass Completions Allowed}
+#'  \item{`pass_net_yards_allowed` : integer.}{Net Passing Yards Allowed}
+#'  \item{`pass_long_allowed` : integer.}{Longest pass Allowed}
+#'  \item{`pass_touchdowns_allowed` : integer.}{Passing TDs Allowed}
+#'  \item{`completion_percentage_allowed` : character.}{Team completion % Allowed}
+#'  \item{`pass_efficiency_allowed` : character.}{Team passer rating Allowed}
+#'  \item{`pass_interceptions_allowed` : integer.}{Interceptions Thrown Allowed}
+#'  \item{`pass_fumbles_forced` : integer.}{Fumbles forced while opponent passing}
+#'  \item{`rush_attempts_allowed` : integer.}{Rush Attempts Allowed}
+#'  \item{`rush_net_yards_allowed` : integer.}{Net rushing yards Allowed}
+#'  \item{`rush_long_allowed` : integer.}{Longest rush Allowed}
+#'  \item{`rush_touchdowns_allowed` : integer.}{Rushing TDs Allowed}
+#'  \item{`rush_long_touchdowns_allowed` : integer.}{Longest rushing TD Allowed}
+#'  \item{`rec_attempts_allowed` : integer.}{Targets Allowed}
+#'  \item{`rec_caught_allowed` : integer.}{Receptions Allowed}
+#'  \item{`rec_yards_allowed` : integer.}{Receiving yards Allowed}
+#'  \item{`rec_long_allowed` : integer.}{Longest reception Allowed}
+#'  \item{`rec_touchdowns_allowed` : integer.}{Receiving TDs Allowed}
+#'  \item{`rec_long_touchdowns_allowed` : integer.}{Longest TD Reception Allowed}
+#'  \item{`rec_yards_after_catch_allowed` : integer.}{Yards after Catch Allowed}
+#'  \item{`rec_fumbles_forced` : integer.}{Fumbles after reception Forced}
+#'  \item{`total_penalties` : integer.}{Total penalties}
+#'  \item{`total_penalty_yards` : integer.}{Penalty Yards}
+#'  \item{`offence_penalties` : integer.}{Offensive penalties}
+#'  \item{`offence_penalty_yards` : integer.}{Offensive penalty yards}
+#'  \item{`defence_penalties` : integer.}{Defensive penalties}
+#'  \item{`defence_penalty_yards` : integer.}{Defensive penalty yards}
+#'  \item{`special_teams_coverage_penalties` : integer.}{Special Teams Coverage Penalties}
+#'  \item{`special_teams_coverage_penalty_yards` : integer.}{ST Coverage penalty yards}
+#'  \item{`special_teams_retrurn_penalties` : integer.}{ST Return Penalties}
+#'  \item{`special_teams_return_penalty_yards` : integer.}{ST Return Penalty yards}
 #' }
 #' @source \url{https://api.collegefootballdata.com/games/teams}
 #' @keywords Team Game Stats
@@ -507,9 +594,8 @@ cfl_game_records <- function(season = NA, team = NA) {
 #' @export
 #' @examples
 #' \donttest{
-#'   cfbd_game_team_stats(2019, team = "LSU")
+#'   cfl_game_team_stats(season = 2019, team = "EDM", week = 1)
 #'
-#'   cfbd_game_team_stats(2013, team = "Florida State")
 #' }
 #'
 #'

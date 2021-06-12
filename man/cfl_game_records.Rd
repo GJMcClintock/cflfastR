@@ -4,7 +4,7 @@
 \alias{cfl_game_records}
 \title{\strong{Get team records by year}}
 \source{
-\url{https://api.collegefootballdata.com/records}
+\url{https://api.cfl.ca/v1/standings/}
 }
 \usage{
 cfl_game_records(season = NA, team = NA)
@@ -23,26 +23,34 @@ Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC}
 \value{
 \code{\link[=cfl_game_records]{cfl_game_records()}} - A data frame with 20 variables:
 \describe{
-\item{\code{year}: integer.}{Season of the games.}
-\item{\code{team}: character.}{Team name.}
-\item{\code{conference}: character.}{Conference of the team.}
-\item{\code{division}: character.}{Division in the conference of the team.}
-\item{\code{total_games}: integer.}{Total number of games played.}
-\item{\code{total_wins}: integer.}{Total wins.}
-\item{\code{total_losses}: integer.}{Total losses.}
-\item{\code{total_ties}: integer.}{Total ties.}
-\item{\code{conference_games}: integer.}{Number of conference games.}
-\item{\code{conference_wins}: integer.}{Total conference wins.}
-\item{\code{conference_losses}: integer.}{Total conference losses.}
-\item{\code{conference_ties}: integer.}{Total conference ties.}
-\item{\code{home_games}: integer.}{Total home games.}
-\item{\code{home_wins}: integer.}{Total home wins.}
-\item{\code{home_losses}: integer.}{Total home losses.}
-\item{\code{home_ties}: integer.}{Total home ties.}
-\item{\code{away_games}: integer.}{Total away games.}
-\item{\code{away_wins}: integer.}{Total away wins.}
-\item{\code{away_losses}: integer.}{Total away losses.}
-\item{\code{away_ties}: integer.}{Total away ties.}
+\item{\code{division_id} : integer.}{Division ID}
+\item{\code{division_name} : character.}{Division Name}
+\item{\code{place} : integer.}{Place in Division}
+\item{\code{flags} : character.}{Flags}
+\item{\code{team_id} : integer.}{Team Id}
+\item{\code{letter} : character.}{First letter of team abbreviation}
+\item{\code{abbreviation} : character.}{Team abbreviation}
+\item{\code{location} : character.}{Team location}
+\item{\code{nickname} : character.}{Team Mascot}
+\item{\code{full_name} : character.}{Full name (eg: BC Lions)}
+\item{\code{games_played} : integer.}{Games Played}
+\item{\code{wins} : integer.}{Wins}
+\item{\code{losses} : integer.}{Losses}
+\item{\code{ties} : integer.}{Ties}
+\item{\code{points} : integer.}{Points in Standings (2pts for W, 1pt for T)}
+\item{\code{winning_percentage} : integer.}{Win \%: Pts / (Games Played * 2)}
+\item{\code{points_for} : integer.}{Points Scored}
+\item{\code{points_against} : integer.}{Points Scored Against}
+\item{\code{home_wins} : integer.}{Home Wins}
+\item{\code{home_losses} : integer.}{Home Losses}
+\item{\code{home_ties} : integer.}{Home Ties}
+\item{\code{away_wins} : integer.}{Road wins}
+\item{\code{away_losses} : integer.}{Road losses}
+\item{\code{away_ties} : integer.}{Road ties}
+\item{\code{division_wins} : integer.}{Division Wins}
+\item{\code{division_losses} : integer.}{Division Losses}
+\item{\code{division_ties} : integer.}{Division Ties}
+\item{\code{season} : integer.}{Season}
 }
 }
 \description{
@@ -50,9 +58,8 @@ Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC}
 }
 \examples{
 \donttest{
-  cfbd_game_records(2018, team = "Notre Dame")
+  cfl_game_records(2018, team = "WPG")
 
-  cfbd_game_records(2013, team = "Florida State")
 }
 }
 \keyword{Info}

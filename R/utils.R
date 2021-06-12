@@ -47,13 +47,6 @@ custom_mode <- function(x, na.rm = TRUE) {
   return(ux[which.max(tabulate(match(x, ux)))])
 }
 
-fix_nulls <- function(x, y='n') {
-  ifelse(length(x),
-          x,
-         ifelse(y=='n',NA_integer_,NA_character_)
-         )
-}
-
 most_recent_season <- function() {
   dplyr::if_else(
     as.double(substr(Sys.Date(), 6, 7)) >= 9,
@@ -121,50 +114,95 @@ flatten_play_by_play <- function(single_play_JSON) {
                "team_id", "play_summary"
   )
 
+  position_id <- c(1,	2,	3,	4,	5,	6,	7,	8,	9,	10,	11,	12,	13,	14,	15,	16,
+                   17,	18,	19,	21,	23,	24,	25,	26,	27,	28,	29,	30,	31,	32,	33,	34)
+  position_desc <- c('Quarterback',	'Running Back',	'Full Back',	'Slotback',	'Offensive Lineman',
+                     'Guard',	'Defensive End',	'Wide Receiver',	'Receiver/Kick Return',	'Kick Return',
+                     'Linebacker',	'Defensive Back',	'Defensive Lineman',	'Punter',	'Punter/Kicker',
+                     'Kicker',	'Long Snapper',	'Defensive Tackle',	'Center',	'Corner Back',	'Safety',
+                     'Tackle',	'Offensive Tackle',	'Tight End',	'Special Teams Tackle',	'Right End',
+                     'Outside Linebacker',	'Nose Tackle',	'Not Applicable',	'Middle Linebacker',
+                     'Inside Linebacker',	'Halfback')
+  position_id <- data.frame(
+    position_id, position_desc
+  )
+
+
+
+  play_result_type_id <- c(0,	1,	2,	3,	4,	5,	6,	7,	8,	9,	10,	11)
+  play_result_type_desc <- c('Unknown',	'Touchdown',	'Field Goal',	'Punt',
+                             'Turnover on Downs',	'Missed Field Goal',	'Interception',
+                             'Fumble',	'End of Half',	'End of Game',	'Safety',	'Initial Kickoff')
+  play_result_type_id <- data.frame(
+    play_result_type_id , play_result_type_desc
+  )
+
+  play_success_id <- c(0,	3,	6,	10,	11,	13,	16,	24,	29,	47,	58,	74,	78,
+                       98,	110,	111,	116,	119,	122,	900,	901,	902,	903)
+  play_success_desc <- c('Unknown / Not Applicable',	'Success (1 Point Convert)',
+                         'Success (2 Point Convert)',	'Success (Field Goal)',	'Failed (Field Goal)',
+                         'Failed (Field Goal); Single',	'Failed (Field Goal); TD on Missed FG',
+                         'Failed (Punt); TD on Fumble Return',	'Success (Kick)',	'Success (Pass)',
+                         'Success (Punt)',	'Success (Rush)',	'Sack',	'Failed (Pass)',	'Safety Against',
+                         'Failed (1 Point Convert)',	'Failed (1 Point Convert)',
+                         'Failed (Field Goal); TD on Missed FG',	'Success (2 Point Convert); Recovered',
+                         'Failed (Rush)',	'Failed (Convert Kick)',	'Failed (Convert Rush)',	'Failed (Convert Pass)')
+  play_success_id <- data.frame(
+    play_success_id, play_success_desc
+  )
+
+
+  play_type_id <- c(0,	1,	2,	3,	4,	5,	6,	7,	8,	9)
+  play_type_desc <- c('Not Applicable',	'Rush',	'Pass',	'Convert',	'Kickoff',
+                      'Field Goal',	'Punt',	'Team Loss',	'Convert Rush',	'Convert Pass')
+  play_type_id <- data.frame(
+    play_type_id, play_type_desc
+  )
+
   # Player IDs
   quarterback_id <- ifelse(
-    single_play_JSON.players.quarterback.cfl_central_id == 0,
+    single_play_JSON$players$quarterback$cfl_central_id == 0,
     NA,
-    single_play_JSON.players.quarterback.cfl_central_id)
+    single_play_JSON$players$quarterback$cfl_central_id)
 
   ball_carrier_id <- ifelse(
-    single_play_JSON.players.ball_carrier.cfl_central_id == 0,
+    single_play_JSON$players$ball_carrier$cfl_central_id == 0,
     NA,
-    single_play_JSON.players.ball_carrier.cfl_central_id)
+    single_play_JSON$players$ball_carrier$cfl_central_id)
 
   primary_defender_id <- ifelse(
-    single_play_JSON.players.primary_defender.cfl_central_id == 0,
+    single_play_JSON$players$primary_defender$cfl_central_id == 0,
     NA,
-    single_play_JSON.players.primary_defender.cfl_central_id)
+    single_play_JSON$players$primary_defender$cfl_central_id)
 
 
   # Play descriptions/results
   play_type <- subset(play_type_id,
-                      play_type_id == single_play_JSON.play_type_id,
+                      play_type_id == single_play_JSON$play_type_id,
                       select=play_type_desc)
 
   play_result <- subset(play_result_type_id,
-                        play_result_type_id == single_play_JSON.play_result_type_id,
+                        play_result_type_id == single_play_JSON$play_result_type_id,
                         select=play_result_type_desc)
 
   play_success <- subset(play_success_id,
-                         play_success_id == single_play_JSON.play_success_id,
+                         play_success_id == single_play_JSON$play_success_id,
                          select=play_success_desc)
 
   # clock Calcs
   seconds_remain_half <- (
-    min(single_play_JSON.quarter,4) %% 2) * 900 +
-    single_play_JSON.play_clock_start_in_secs
+    min(single_play_JSON$quarter,4) %% 2) * 900 +
+    single_play_JSON$play_clock_start_in_secs
 
   seconds_remain_game <- (
-    4 - min(single_play_JSON.quarter,4)) * 900 +
-    single_play_JSON.play_clock_start_in_secs
+    4 - min(single_play_JSON$quarter,4)) * 900 +
+    single_play_JSON$play_clock_start_in_secs
 
   # Other Calcs
   distance_to_goal <- ifelse(
-    substr(single_play_JSON.team_abbreviation,1,1)==substr(single_play_JSON.field_position_start,1,1),
-    110 - as.integer(substr(single_play_JSON.field_position_start,2,nchar(single_play_JSON.field_position_start))),
-    as.integer(substr(single_play_JSON.field_position_start,2,nchar(single_play_JSON.field_position_start)))
+    substr(single_play_JSON$team_abbreviation,1,1)==substr(single_play_JSON$field_position_start,1,1),
+    110 - as.integer(substr(single_play_JSON$field_position_start,2,nchar(single_play_JSON$field_position_start))),
+    as.integer(substr(single_play_JSON$field_position_start,2,nchar(single_play_JSON$field_position_start)))
   )
 
   # Added player ids. Is a recursive reference best practice?
@@ -176,12 +214,14 @@ flatten_play_by_play <- function(single_play_JSON) {
 
 # get game metadata for a Play-by_play object
 extract_game_data_for_pbp <- function(single_game_JSON) {
-  home <- ifelse(hold_df$team_1.is_at_home, "team_1", "team_2")
+  home <- ifelse(single_game_JSON$team_1$is_at_home, "team_1", "team_2")
   away <- ifelse(home == 'team_1', 'team_2', 'team_1')
   result <- data.frame(
-    game_id = hold_df$game_id,
+    game_id = single_game_JSON$game_id,
     home_team = single_game_JSON[[home]]$abbreviation,
     away_team = single_game_JSON[[away]]$abbreviation,
+    season = single_game_JSON$season,
+    week = single_game_JSON$week,
     stringsAsFactors=FALSE)
   return(result)
 }
@@ -285,7 +325,7 @@ flatten_boxscore <- function(hold_df) {
     completion_percentage_allowed = hold_df$boxscore.teams.team_2.passing.pass_completion_percentage,
     pass_efficiency_allowed = hold_df$boxscore.teams.team_2.passing.pass_efficiency,
     pass_interceptions_allowed = hold_df$boxscore.teams.team_2.passing.pass_interceptions,
-    pass_fumbles_allowed = hold_df$boxscore.teams.team_2.passing.pass_fumbles,
+    pass_fumbles_forced = hold_df$boxscore.teams.team_2.passing.pass_fumbles,
     rush_attempts_allowed = hold_df$boxscore.teams.team_2.rushing.rush_attempts,
     rush_net_yards_allowed = hold_df$boxscore.teams.team_2.rushing.rush_net_yards,
     rush_long_allowed = hold_df$boxscore.teams.team_2.rushing.rush_long,
@@ -298,7 +338,7 @@ flatten_boxscore <- function(hold_df) {
     rec_touchdowns_allowed = hold_df$boxscore.teams.team_2.receiving.receive_touchdowns,
     rec_long_touchdowns_allowed = hold_df$boxscore.teams.team_2.receiving.receive_long_touchdowns,
     rec_yards_after_catch_allowed = hold_df$boxscore.teams.team_2.receiving.receive_yards_after_catch,
-    rec_fumbles_allowed = hold_df$boxscore.teams.team_2.receiving.receive_fumbles,
+    rec_fumbles_forced = hold_df$boxscore.teams.team_2.receiving.receive_fumbles,
     total_penalties = hold_df$boxscore.teams.team_1.penalties.total,
     total_penalty_yards = hold_df$boxscore.teams.team_1.penalties.yards,
     offence_penalties = hold_df$boxscore.teams.team_1.penalties.offence_total,
@@ -399,7 +439,7 @@ flatten_boxscore <- function(hold_df) {
     completion_percentage_allowed = hold_df$boxscore.teams.team_1.passing.pass_completion_percentage,
     pass_efficiency_allowed = hold_df$boxscore.teams.team_1.passing.pass_efficiency,
     pass_interceptions_allowed = hold_df$boxscore.teams.team_1.passing.pass_interceptions,
-    pass_fumbles_allowed = hold_df$boxscore.teams.team_1.passing.pass_fumbles,
+    pass_fumbles_forced = hold_df$boxscore.teams.team_1.passing.pass_fumbles,
     rush_attempts_allowed = hold_df$boxscore.teams.team_1.rushing.rush_attempts,
     rush_net_yards_allowed = hold_df$boxscore.teams.team_1.rushing.rush_net_yards,
     rush_long_allowed = hold_df$boxscore.teams.team_1.rushing.rush_long,
@@ -412,7 +452,7 @@ flatten_boxscore <- function(hold_df) {
     rec_touchdowns_allowed = hold_df$boxscore.teams.team_1.receiving.receive_touchdowns,
     rec_long_touchdowns_allowed = hold_df$boxscore.teams.team_1.receiving.receive_long_touchdowns,
     rec_yards_after_catch_allowed = hold_df$boxscore.teams.team_1.receiving.receive_yards_after_catch,
-    rec_fumbles_allowed = hold_df$boxscore.teams.team_1.receiving.receive_fumbles,
+    rec_fumbles_forced = hold_df$boxscore.teams.team_1.receiving.receive_fumbles,
     total_penalties = hold_df$boxscore.teams.team_2.penalties.total,
     total_penalty_yards = hold_df$boxscore.teams.team_2.penalties.yards,
     offence_penalties = hold_df$boxscore.teams.team_2.penalties.offence_total,
@@ -430,6 +470,7 @@ flatten_boxscore <- function(hold_df) {
 
 # Returns player stats for game box scores
 game_to_player_box <- function(game_id = NA, season= NA) {
+  Sys.sleep(2)
   out_df <- data.frame()
   url <- paste0('http://api.cfl.ca/v1', '/games/', season,
                 '/game/', game_id, '?include=boxscore')
@@ -517,22 +558,3 @@ game_to_player_box <- function(game_id = NA, season= NA) {
   }
   return(out_df)
 }
-
-# rule_header <- function(x) {
-#   rlang::inform(
-#     cli::rule(
-#       left = crayon::bold(x),
-#       right = paste0("cfbfastR version ", utils::packageVersion("cfbfastR")),
-#       width = getOption("width")
-#     )
-#   )
-# }
-#
-# rule_footer <- function(x) {
-#   rlang::inform(
-#     cli::rule(
-#       left = crayon::bold(x),
-#       width = getOption("width")
-#     )
-#   )
-# }
