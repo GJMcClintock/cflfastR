@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Garrett",
            family = "McClintock",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
+           email = "garrettjmcclintock@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: cflfastR is a wrapper for the CFL API to provide play by play data.
 Encoding: UTF-8
