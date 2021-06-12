@@ -29,7 +29,7 @@ if (!requireNamespace('devtools', quietly = TRUE)){
 # Alternatively, using the devtools package:
 devtools::install_github(repo = "gjmcclintock/cflfastR")
 ```
-
+ 
 
 ## **cfbfastR v0.1.0**
   
