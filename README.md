@@ -1,5 +1,5 @@
 
-# **cfbfastR** <a href='http://saiemgilani.github.io/cfbfastR'><img src='man/figures/logo.png' align="right" height="150" /></a>
+# **cflfastR** <a href='http://gjmcclintock.github.io/cflfastR'><img src='man/figures/logo.png' align="right" height="150" /></a>
 
 
 The goal of [**`cflfastR`**](https://gjmcclintock.github.io/cflfastR/) is
@@ -10,7 +10,7 @@ the majority of the functionality offered by cfbfastR and nflfastR.
 ## **Installation**
 
 You can install the released version of
-[**`cfbfastR`**](https://github.com/gjmcclintock/cflfastR/) from
+[**`cflfastR`**](https://github.com/gjmcclintock/cflfastR/) from
 [GitHub](https://github.com/gjmcclintock/cflfastR/) with:
 
 ``` r
@@ -30,7 +30,6 @@ if (!requireNamespace('devtools', quietly = TRUE)){
 devtools::install_github(repo = "gjmcclintock/cflfastR")
 ```
 
-<details>
 
 ## **cfbfastR v0.1.0**
   
@@ -82,7 +81,6 @@ functions without any other changes.
 Sys.setenv(CFL_API_KEY = "XXXX-YOUR-API-KEY-HERE-XXXXX")
 ```
 
-</details>
 
 <br>
 
