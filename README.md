@@ -30,11 +30,7 @@ if (!requireNamespace('devtools', quietly = TRUE)){
 devtools::install_github(repo = "gjmcclintock/cflfastR")
 ```
 
-## **Breaking Changes**
-
 <details>
-
-<summary>View more version news</summary>
 
 ## **cfbfastR v0.1.0**
   
