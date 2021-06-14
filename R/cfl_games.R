@@ -588,6 +588,7 @@ cfl_game_records <- function(season = NA, team = NA) {
 #' @importFrom assertthat assert_that
 #' @importFrom janitor clean_names
 #' @importFrom glue glue
+#' @importFrom purrr map_dfr2
 #' @import dplyr
 #' @import tidyr
 #' @import purrr

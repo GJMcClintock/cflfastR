@@ -2,7 +2,7 @@
 % Please edit documentation in R/cfl_pbp_data.R
 \name{cfl_pbp_data}
 \alias{cfl_pbp_data}
-\title{#' Query for CFL Play-by_Play information}
+\title{Query for CFL Play-by_Play information}
 \usage{
 cfl_pbp_data(season = NA, game_id = NA, week = NA, team = NA, event_type = NA)
 }
@@ -58,7 +58,7 @@ cfl_pbp_data(season = NA, game_id = NA, week = NA, team = NA, event_type = NA)
 }
 }
 \description{
-#' Query for CFL Play-by_Play information
+Query for CFL Play-by_Play information
 }
 \examples{
 \dontrun{
