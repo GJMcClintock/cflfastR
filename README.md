@@ -43,7 +43,7 @@ devtools::install_github(repo = "gjmcclintock/cflfastR")
  
 #### **CFL API Keys**
 
-The [CollegeFootballData API](https://api.cfl.ca/)
+The [CFL API](https://api.cfl.ca/)
 requires an API key, here’s a quick run-down:
 
   - To get an API key, follow the directions here: [CFL
@@ -67,7 +67,7 @@ CFL_API_KEY = XXXX-YOUR-API-KEY-HERE-XXXXX
 Save the script and restart your RStudio session, by clicking `Session`
 (in between `Plots` and `Build`) and click `Restart R` (there also
 exists the shortcut `Ctrl + Shift + F10` to restart your session). If
-set correctly, from then on you should be able to use any of the `cfbd_`
+set correctly, from then on you should be able to use any of the `cfl_`
 functions without any other changes.
 
   - For less consistent usage: At the beginning of every session or
