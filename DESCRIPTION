@@ -1,5 +1,5 @@
 Package: cflfastR
-Title: What the Package Does (One Line, Title Case)
+Title: Wrapping the official CFL Data API to provide clean-ish play by play data.
 Version: 0.1.0
 Authors@R: 
     person(given = "Garrett",

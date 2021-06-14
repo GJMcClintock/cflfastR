@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cflfastR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -243,9 +243,23 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-  <span class='fu'>cfbd_calendar</span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in cfbd_calendar(2019): could not find function "cfbd_calendar"</span></div><div class='input'><span class='co'># }</span>
-</div></pre>
+  <span class='fu'>cfl_calendar</span><span class='op'>(</span><span class='fl'>2019</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 27 x 5</span><span>
+#&gt; </span><span style='color: #949494;'># Groups:   season, week [24]</span><span>
+#&gt;    season  week event_type     first_game_start         last_game_start         
+#&gt;     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                   
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     1 Preseason      2019-05-26T16:00:00-04:… 2019-05-26T16:00:00-04:…
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     2 Preseason      2019-05-30T11:00:00-04:… 2019-06-01T19:00:00-04:…
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     3 Preseason      2019-06-06T19:30:00-04:… 2019-06-07T22:00:00-04:…
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     1 Regular Season 2019-06-13T19:00:00-04:… 2019-06-15T22:00:00-04:…
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     2 Regular Season 2019-06-20T19:30:00-04:… 2019-06-22T16:00:00-04:…
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     3 Regular Season 2019-06-27T20:30:00-04:… 2019-07-01T19:00:00-04:…
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     4 Regular Season 2019-07-04T19:30:00-04:… 2019-07-06T22:00:00-04:…
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     5 Regular Season 2019-07-11T22:00:00-04:… 2019-07-13T19:00:00-04:…
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     6 Regular Season 2019-07-18T21:00:00-04:… 2019-07-20T19:00:00-04:…
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>   </span><span style='text-decoration: underline;'>2</span><span>019     7 Regular Season 2019-07-25T19:00:00-04:… 2019-07-27T19:00:00-04:…
+#&gt; </span><span style='color: #949494;'># … with 17 more rows</span><span></div><div class='input'><span class='co'># }</span>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -257,7 +271,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by <a href='https://twitter.com/gjmcclintock'>Garrett McClintock</a>.</p>
 </div>
 
 <div class="pkgdown">

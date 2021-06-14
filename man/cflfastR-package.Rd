@@ -4,14 +4,14 @@
 \name{cflfastR-package}
 \alias{cflfastR}
 \alias{cflfastR-package}
-\title{cflfastR: What the Package Does (One Line, Title Case)}
+\title{cflfastR: Wrapping the official CFL Data API to provide clean-ish play by play data.}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-What the package does (one paragraph).
+cflfastR is a wrapper for the CFL API to provide play by play data.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Garrett McClintock \email{garrettjmcclintock@gmail.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
 
 }
 \keyword{internal}

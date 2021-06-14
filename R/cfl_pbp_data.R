@@ -101,7 +101,7 @@ cfl_pbp_fetch <- function(season = NA, game_id = NA) {
 #' @importFrom httr stop_for_status GET content
 #' @importFrom dplyr bind_rows
 #' @import assertthat
-#' @importFrom purrr map_dfr2
+#' @importFrom purrr map2_dfr
 cfl_pbp_data <- function(season = NA, game_id = NA, week = NA, team = NA, event_type = NA) {
   assertthat::assert_that(is.numeric(season) & nchar(season) == 4,
                           msg = "Enter valid season as a number (YYYY)"

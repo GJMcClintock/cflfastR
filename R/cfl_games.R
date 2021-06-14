@@ -185,7 +185,7 @@ cfl_game_info <- function(season = NA,  week = NA, team = NA, event_type = NA, g
 #' @export
 #' @examples
 #' \donttest{
-#'   cfbd_calendar(2019)
+#'   cfl_calendar(2019)
 #' }
 
 cfl_calendar <- function(year,
@@ -417,6 +417,7 @@ cfl_game_player_stats <- function(season = NA, game_id = NA, week = NA, team = N
 #' @importFrom assertthat assert_that
 #' @import dplyr
 #' @import tidyr
+#' @import purrr
 #' @export
 #' @examples
 #' \donttest{
@@ -588,7 +589,7 @@ cfl_game_records <- function(season = NA, team = NA) {
 #' @importFrom assertthat assert_that
 #' @importFrom janitor clean_names
 #' @importFrom glue glue
-#' @importFrom purrr map_dfr2
+#' @importFrom purrr map2_dfr
 #' @import dplyr
 #' @import tidyr
 #' @import purrr

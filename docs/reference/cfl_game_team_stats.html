@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cflfastR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -386,7 +386,156 @@ Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC<
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
   <span class='fu'>cfl_game_team_stats</span><span class='op'>(</span>season <span class='op'>=</span> <span class='fl'>2019</span>, team <span class='op'>=</span> <span class='st'>"EDM"</span>, week <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in cfl_game_team_stats(season = 2019, team = "EDM", week = 1): could not find function "cfl_game_team_stats"</span></div><div class='input'>
+</div><div class='output co'>#&gt;   game_id                date_start week season     event_type
+#&gt; 1    2552 2019-05-26T16:00:00-04:00    1   2019      Preseason
+#&gt; 2    2562 2019-06-14T21:00:00-04:00    1   2019 Regular Season
+#&gt; 3    2552 2019-05-26T16:00:00-04:00    1   2019      Preseason
+#&gt; 4    2562 2019-06-14T21:00:00-04:00    1   2019 Regular Season
+#&gt;                  venue team home_away points_for points_against time_of_pos
+#&gt; 1 Commonwealth Stadium   BC      away          7             22       26:32
+#&gt; 2 Commonwealth Stadium  MTL      away         25             32       25:52
+#&gt; 3 Commonwealth Stadium  EDM      home         22              7       33:28
+#&gt; 4 Commonwealth Stadium  EDM      home         32             25       34:08
+#&gt;   fumbles int downs pass_attempts pass_completions pass_net_yards pass_long
+#&gt; 1       0   2     2            31               13            125        53
+#&gt; 2       1   1     0            27               14            191        51
+#&gt; 3       0   0     3            37               23            181        59
+#&gt; 4       4   0     1            41               32            447        45
+#&gt;   pass_touchdowns completion_percentage pass_efficiency pass_interceptions
+#&gt; 1               0                 41.9%           26.95                  2
+#&gt; 2               2                 51.9%           84.03                  1
+#&gt; 3               1                 62.2%           83.28                  0
+#&gt; 4               3                 78.0%          136.94                  0
+#&gt;   pass_fumbles rush_attempts rush_net_yards rush_long rush_touchdowns
+#&gt; 1            0            12             76        42               0
+#&gt; 2            0            17            134        67               1
+#&gt; 3            0            21             73        24               1
+#&gt; 4            1            28            161        23               1
+#&gt;   rush_long_touchdowns rec_attempts rec_caught rec_yards rec_long
+#&gt; 1                    0           31         13       125       78
+#&gt; 2                    5           26         14       191       96
+#&gt; 3                    1           37         23       181      138
+#&gt; 4                    2           41         32       447      153
+#&gt;   rec_touchdowns rec_long_touchdowns rec_yards_after_catch rec_fumbles punts
+#&gt; 1              0                   0                    50           0     9
+#&gt; 2              2                  25                    33           1     4
+#&gt; 3              1                  12                    51           0    10
+#&gt; 4              3                  51                   184           1     4
+#&gt;   punt_yards punt_net_yards punt_long punt_singles punts_blocked punts_in_10
+#&gt; 1        391            213       101            0             0           0
+#&gt; 2        185            172        54            0             0           1
+#&gt; 3        426            347        50            0             0           1
+#&gt; 4        175            166        52            0             0           0
+#&gt;   punts_in_20 punts_returned punt_returns punt_returns_yards
+#&gt; 1           3              9            9                 79
+#&gt; 2           1              4            2                  9
+#&gt; 3           3             10            8                178
+#&gt; 4           2              4            3                 13
+#&gt;   punt_returns_touchdowns punt_returns_long punt_returns_touchdowns_long
+#&gt; 1                       1                79                           63
+#&gt; 2                       0                 7                            0
+#&gt; 3                       0               109                            0
+#&gt; 4                       0                12                            0
+#&gt;   kick_returns kick_returns_yards kick_returns_touchdowns kick_returns_long
+#&gt; 1            4                104                       0               104
+#&gt; 2            5                 99                       0                27
+#&gt; 3            3                 54                       0                50
+#&gt; 4            7                131                       0                37
+#&gt;   kick_returns_touchdowns_long field_goal_attempts field_goal_made
+#&gt; 1                            0                   1               0
+#&gt; 2                            0                   2               1
+#&gt; 3                            0                   2               2
+#&gt; 4                            0                   1               0
+#&gt;   field_goal_yards field_goal_singles field_goal_long field_goal_points kicks
+#&gt; 1                0                  0               0                 0     3
+#&gt; 2               52                  1              52                 3     7
+#&gt; 3               47                  0              27                 6     4
+#&gt; 4                0                  0               0                 0     5
+#&gt;   kick_yards kicks_net_yards kicks_long kicks_singles kicks_out_of_end_zone
+#&gt; 1        192             138        128             0                     0
+#&gt; 2        509             378         81             0                     0
+#&gt; 3        256             152         67             0                     0
+#&gt; 4        338             239         73             0                     0
+#&gt;   kicks_onside one_point_convert_attempts one_point_convert_made
+#&gt; 1            0                          1                      1
+#&gt; 2            0                          3                      3
+#&gt; 3            0                          2                      2
+#&gt; 4            0                          4                      4
+#&gt;   two_point_convert_attempts two_point_convert_made tackles_total
+#&gt; 1                          0                      0            58
+#&gt; 2                          0                      0            60
+#&gt; 3                          0                      0            38
+#&gt; 4                          0                      0            36
+#&gt;   tackles_defensive tackles_special_teams sacks_qb_made interceptions
+#&gt; 1                49                     9             5             0
+#&gt; 2                53                     7             0             0
+#&gt; 3                29                     9             5             2
+#&gt; 4                28                     8             2             1
+#&gt;   fumbles_forced fumbles_recovered passes_knocked_down defensive_touchdowns
+#&gt; 1              0                 0                   2                    0
+#&gt; 2              1                 2                   2                    0
+#&gt; 3              0                 0                   2                    0
+#&gt; 4              0                 0                   1                    0
+#&gt;   defensive_safeties pass_attempts_allowed pass_completions_allowed
+#&gt; 1                  0                    37                       23
+#&gt; 2                  0                    41                       32
+#&gt; 3                  1                    31                       13
+#&gt; 4                  2                    27                       14
+#&gt;   pass_net_yards_allowed pass_long_allowed pass_touchdowns_allowed
+#&gt; 1                    181                59                       1
+#&gt; 2                    447                45                       3
+#&gt; 3                    125                53                       0
+#&gt; 4                    191                51                       2
+#&gt;   completion_percentage_allowed pass_efficiency_allowed
+#&gt; 1                         62.2%                   83.28
+#&gt; 2                         78.0%                  136.94
+#&gt; 3                         41.9%                   26.95
+#&gt; 4                         51.9%                   84.03
+#&gt;   pass_interceptions_allowed pass_fumbles_forced rush_attempts_allowed
+#&gt; 1                          0                   0                    21
+#&gt; 2                          0                   1                    28
+#&gt; 3                          2                   0                    12
+#&gt; 4                          1                   0                    17
+#&gt;   rush_net_yards_allowed rush_long_allowed rush_touchdowns_allowed
+#&gt; 1                     73                24                       1
+#&gt; 2                    161                23                       1
+#&gt; 3                     76                42                       0
+#&gt; 4                    134                67                       1
+#&gt;   rush_long_touchdowns_allowed rec_attempts_allowed rec_caught_allowed
+#&gt; 1                            1                   37                 23
+#&gt; 2                            2                   41                 32
+#&gt; 3                            0                   31                 13
+#&gt; 4                            5                   26                 14
+#&gt;   rec_yards_allowed rec_long_allowed rec_touchdowns_allowed
+#&gt; 1               181              138                      1
+#&gt; 2               447              153                      3
+#&gt; 3               125               78                      0
+#&gt; 4               191               96                      2
+#&gt;   rec_long_touchdowns_allowed rec_yards_after_catch_allowed rec_fumbles_forced
+#&gt; 1                          12                            51                  0
+#&gt; 2                          51                           184                  1
+#&gt; 3                           0                            50                  0
+#&gt; 4                          25                            33                  1
+#&gt;   total_penalties total_penalty_yards offence_penalties offence_penalty_yards
+#&gt; 1              11                 135                 1                     5
+#&gt; 2              11                 103                 6                    67
+#&gt; 3              13                 144                 4                    20
+#&gt; 4              12                 118                 2                    15
+#&gt;   defence_penalties defence_penalty_yards special_teams_coverage_penalties
+#&gt; 1                 3                    60                                4
+#&gt; 2                 2                    10                                0
+#&gt; 3                 5                    69                                3
+#&gt; 4                 7                    73                                0
+#&gt;   special_teams_coverage_penalty_yards special_teams_retrurn_penalties
+#&gt; 1                                   40                               3
+#&gt; 2                                    0                               3
+#&gt; 3                                   45                               1
+#&gt; 4                                    0                               3
+#&gt;   special_teams_return_penalty_yards
+#&gt; 1                                 30
+#&gt; 2                                 26
+#&gt; 3                                 10
+#&gt; 4                                 30</div><div class='input'>
 <span class='co'># }</span>
 
 
@@ -402,7 +551,7 @@ Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC<
 
       <footer>
       <div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by <a href='https://twitter.com/gjmcclintock'>Garrett McClintock</a>.</p>
 </div>
 
 <div class="pkgdown">

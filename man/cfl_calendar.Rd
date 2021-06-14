@@ -29,6 +29,6 @@ cfl_calendar(year, verbose = FALSE)
 }
 \examples{
 \donttest{
-  cfbd_calendar(2019)
+  cfl_calendar(2019)
 }
 }
