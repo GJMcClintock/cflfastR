@@ -12,44 +12,30 @@
 #' }
 #' @details
 #'
-#' ### **Get game advanced box score information.**
-#' ```r
-#' cfbd_game_box_advanced(game_id = 401114233)
 #' ```
 #' ### **Get player statistics by game**
 #' ```r
-#' cfbd_game_player_stats(2018, week = 15, conference = "Ind")
 #'
-#' cfbd_game_player_stats(2013, week = 1, team = "Florida State", category = "passing")
+#' cfl_game_player_stats(2013, week = 1, team = "WPG")
 #' ```
 #' ### **Get team records by year**
 #' ```r
-#' cfbd_game_records(2018, team = "Notre Dame")
+#' cfl_game_records(2018, team = "BC)
 #'
-#' cfbd_game_records(2013, team = "Florida State")
 #' ```
 #' ### **Get team statistics by game**
 #' ```r
-#' cfbd_game_team_stats(2019, team = "LSU")
+#' cfl_game_team_stats(2019, team = "CGY")
 #'
-#' cfbd_game_team_stats(2013, team = "Florida State")
 #' ```
 #' ### **Get results information from games.**
 #' ```r
-#' cfbd_game_info(2018, week = 1)
+#' cfl_game_info(2018, week = 1)
 #'
-#' cfbd_game_info(2018, week = 7, conference = "Ind")
-#'
-#' # 7 OTs LSU @ TAMU
-#' cfbd_game_info(2018, week = 13, team = "Texas A&M", quarter_scores = TRUE)
 #' ```
 #' ### **Get calendar of weeks by season.**
 #' ```r
-#' cfbd_calendar(2019)
-#' ```
-#' ### **Get game media information (TV, radio, etc).**
-#' ```r
-#' cfbd_game_media(2019, week = 4, conference = "ACC")
+#' cfl_calendar(2019)
 #' ```
 #'
 NULL
@@ -222,19 +208,11 @@ cfl_calendar <- function(year,
 #' @title
 #' **Get player statistics by game**
 #' @param year (\emph{Integer} required): Year, 4 digit format(\emph{YYYY})
-#' @param week (\emph{Integer} optional): Week - values from 1-15, 1-14 for seasons pre-playoff (i.e. 2013 or earlier)
-#' @param season_type (\emph{String} default regular): Select Season Type: regular or postseason
-#' @param team (\emph{String} optional): D-I Team
-#' @param category (\emph{String} optional): Category filter (e.g defensive)\cr
-#' Offense: passing, receiving, rushing\cr
-#' Defense: defensive, fumbles, interceptions\cr
-#' Special Teams: punting, puntReturns, kicking, kickReturns\cr
-#' @param conference (\emph{String} optional): Conference abbreviation - Select a valid FBS conference\cr
-#' Conference abbreviations P5: ACC, B12, B1G, SEC, PAC\cr
-#' Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC\cr
+#' @param week (\emph{Integer} optional): Week
+#' @param event_type (\emph{String} default regular): Select Season Type: Preseason, Regular Season, Playoffs, Grey Cup
+#' @param team (\emph{String} optional): CFL Team Abbreviation
 #' @param game_id (\emph{Integer} optional): Game ID filter for querying a single game
-#' Can be found using the [cfbd_game_info()] function
-#' @param verbose Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function
+#' Can be found using the [cfl_game_info()] function
 #'
 #' @return [cfl_game_player_stats()] - A data frame with 32 variables:
 #' \describe{
@@ -373,11 +351,7 @@ cfl_game_player_stats <- function(season = NA, game_id = NA, week = NA, team = N
 #' @title
 #' **Get team records by year**
 #' @param year (\emph{Integer} optional): Year, 4 digit format (\emph{YYYY})
-#' @param team (\emph{String} optional): Team - Select a valid team, D1 football
-#' @param conference (\emph{String} optional): DI Conference abbreviation - Select a valid FBS conference\cr
-#' Conference abbreviations P5: ACC, B12, B1G, SEC, PAC\cr
-#' Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC
-#' @param verbose Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function
+#' @param team (\emph{String} optional): CFL Team Abbreviation
 #' @return [cfl_game_records()] - A data frame with 20 variables:
 #' \describe{
 #'  \item{`division_id` : integer.}{Division ID}
@@ -453,16 +427,11 @@ cfl_game_records <- function(season = NA, team = NA) {
 #' @title
 #' **Get team statistics by game**
 #' @param year (\emph{Integer} required): Year, 4 digit format (\emph{YYYY})
-#' @param week (\emph{Integer} optional): Week - values range from 1-15, 1-14 for seasons pre-playoff, i.e. 2013 or earlier
-#' @param season_type (\emph{String} default: regular): Select Season Type - regular, postseason, or both
-#' @param team (\emph{String} optional): D-I Team
-#' @param conference (\emph{String} optional): Conference abbreviation - Select a valid FBS conference\cr
-#' Conference abbreviations P5: ACC, B12, B1G, SEC, PAC\cr
-#' Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC\cr
+#' @param week (\emph{Integer} optional): Week 
+#' @param event_type (\emph{String} default: regular): Select Season Type - regular, postseason, or both
+#' @param team (\emph{String} optional): Team Abbreviation
 #' @param game_id (\emph{Integer} optional): Game ID filter for querying a single game\cr
-#' Can be found using the [cfbd_game_info()] function
-#' @param rows_per_team (\emph{Integer} default 1): Both Teams for each game on one or two row(s), Options: 1 or 2
-#' @param verbose Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function
+#' Can be found using the [cfl_game_info()] function
 #'
 #' @return [cfl_game_team_stats()] - A data frame with 78 variables:
 #' \describe{
