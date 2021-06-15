@@ -17,26 +17,15 @@ cfl_game_player_stats(
 }
 \arguments{
 \item{game_id}{(\emph{Integer} optional): Game ID filter for querying a single game
-Can be found using the \code{\link[=cfbd_game_info]{cfbd_game_info()}} function}
+Can be found using the \code{\link[=cfl_game_info]{cfl_game_info()}} function}
 
-\item{week}{(\emph{Integer} optional): Week - values from 1-15, 1-14 for seasons pre-playoff (i.e. 2013 or earlier)}
+\item{week}{(\emph{Integer} optional): Week}
 
-\item{team}{(\emph{String} optional): D-I Team}
+\item{team}{(\emph{String} optional): CFL Team Abbreviation}
+
+\item{event_type}{(\emph{String} default regular): Select Season Type: Preseason, Regular Season, Playoffs, Grey Cup}
 
 \item{year}{(\emph{Integer} required): Year, 4 digit format(\emph{YYYY})}
-
-\item{season_type}{(\emph{String} default regular): Select Season Type: regular or postseason}
-
-\item{category}{(\emph{String} optional): Category filter (e.g defensive)\cr
-Offense: passing, receiving, rushing\cr
-Defense: defensive, fumbles, interceptions\cr
-Special Teams: punting, puntReturns, kicking, kickReturns\cr}
-
-\item{conference}{(\emph{String} optional): Conference abbreviation - Select a valid FBS conference\cr
-Conference abbreviations P5: ACC, B12, B1G, SEC, PAC\cr
-Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC\cr}
-
-\item{verbose}{Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function}
 }
 \value{
 \code{\link[=cfl_game_player_stats]{cfl_game_player_stats()}} - A data frame with 32 variables:

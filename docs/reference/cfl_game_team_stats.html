@@ -225,37 +225,23 @@
     <tr>
       <th>game_id</th>
       <td><p>(<em>Integer</em> optional): Game ID filter for querying a single game<br />
-Can be found using the <code>cfbd_game_info()</code> function</p></td>
+Can be found using the <code><a href='cfl_game_info.html'>cfl_game_info()</a></code> function</p></td>
     </tr>
     <tr>
       <th>week</th>
-      <td><p>(<em>Integer</em> optional): Week - values range from 1-15, 1-14 for seasons pre-playoff, i.e. 2013 or earlier</p></td>
+      <td><p>(<em>Integer</em> optional): Week</p></td>
     </tr>
     <tr>
       <th>team</th>
-      <td><p>(<em>String</em> optional): D-I Team</p></td>
+      <td><p>(<em>String</em> optional): Team Abbreviation</p></td>
+    </tr>
+    <tr>
+      <th>event_type</th>
+      <td><p>(<em>String</em> default: regular): Select Season Type - regular, postseason, or both</p></td>
     </tr>
     <tr>
       <th>year</th>
       <td><p>(<em>Integer</em> required): Year, 4 digit format (<em>YYYY</em>)</p></td>
-    </tr>
-    <tr>
-      <th>season_type</th>
-      <td><p>(<em>String</em> default: regular): Select Season Type - regular, postseason, or both</p></td>
-    </tr>
-    <tr>
-      <th>conference</th>
-      <td><p>(<em>String</em> optional): Conference abbreviation - Select a valid FBS conference<br />
-Conference abbreviations P5: ACC, B12, B1G, SEC, PAC<br />
-Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC<br /></p></td>
-    </tr>
-    <tr>
-      <th>rows_per_team</th>
-      <td><p>(<em>Integer</em> default 1): Both Teams for each game on one or two row(s), Options: 1 or 2</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function</p></td>
     </tr>
     </table>
 

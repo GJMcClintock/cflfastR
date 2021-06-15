@@ -10,15 +10,9 @@
 cfl_game_records(season = NA, team = NA)
 }
 \arguments{
-\item{team}{(\emph{String} optional): Team - Select a valid team, D1 football}
+\item{team}{(\emph{String} optional): CFL Team Abbreviation}
 
 \item{year}{(\emph{Integer} optional): Year, 4 digit format (\emph{YYYY})}
-
-\item{conference}{(\emph{String} optional): DI Conference abbreviation - Select a valid FBS conference\cr
-Conference abbreviations P5: ACC, B12, B1G, SEC, PAC\cr
-Conference abbreviations G5 and FBS Independents: CUSA, MAC, MWC, Ind, SBC, AAC}
-
-\item{verbose}{Logical parameter (TRUE/FALSE, default: FALSE) to return warnings and messages from function}
 }
 \value{
 \code{\link[=cfl_game_records]{cfl_game_records()}} - A data frame with 20 variables:

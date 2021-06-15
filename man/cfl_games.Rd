@@ -14,42 +14,27 @@ Get results, statistics and information for games\cr
 }
 }
 \details{
-\subsection{\strong{Get game advanced box score information.}}{\if{html}{\out{<div class="r">}}\preformatted{cfbd_game_box_advanced(game_id = 401114233)
+\preformatted{### **Get player statistics by game**
+```r
+
+cfl_game_player_stats(2013, week = 1, team = "WPG")
+}
+\subsection{\strong{Get team records by year}}{\if{html}{\out{<div class="r">}}\preformatted{cfl_game_records(2018, team = "BC)
+
 }\if{html}{\out{</div>}}
 }
 
-\subsection{\strong{Get player statistics by game}}{\if{html}{\out{<div class="r">}}\preformatted{cfbd_game_player_stats(2018, week = 15, conference = "Ind")
+\subsection{\strong{Get team statistics by game}}{\if{html}{\out{<div class="r">}}\preformatted{cfl_game_team_stats(2019, team = "CGY")
 
-cfbd_game_player_stats(2013, week = 1, team = "Florida State", category = "passing")
 }\if{html}{\out{</div>}}
 }
 
-\subsection{\strong{Get team records by year}}{\if{html}{\out{<div class="r">}}\preformatted{cfbd_game_records(2018, team = "Notre Dame")
+\subsection{\strong{Get results information from games.}}{\if{html}{\out{<div class="r">}}\preformatted{cfl_game_info(2018, week = 1)
 
-cfbd_game_records(2013, team = "Florida State")
 }\if{html}{\out{</div>}}
 }
 
-\subsection{\strong{Get team statistics by game}}{\if{html}{\out{<div class="r">}}\preformatted{cfbd_game_team_stats(2019, team = "LSU")
-
-cfbd_game_team_stats(2013, team = "Florida State")
-}\if{html}{\out{</div>}}
-}
-
-\subsection{\strong{Get results information from games.}}{\if{html}{\out{<div class="r">}}\preformatted{cfbd_game_info(2018, week = 1)
-
-cfbd_game_info(2018, week = 7, conference = "Ind")
-
-# 7 OTs LSU @ TAMU
-cfbd_game_info(2018, week = 13, team = "Texas A&M", quarter_scores = TRUE)
-}\if{html}{\out{</div>}}
-}
-
-\subsection{\strong{Get calendar of weeks by season.}}{\if{html}{\out{<div class="r">}}\preformatted{cfbd_calendar(2019)
-}\if{html}{\out{</div>}}
-}
-
-\subsection{\strong{Get game media information (TV, radio, etc).}}{\if{html}{\out{<div class="r">}}\preformatted{cfbd_game_media(2019, week = 4, conference = "ACC")
+\subsection{\strong{Get calendar of weeks by season.}}{\if{html}{\out{<div class="r">}}\preformatted{cfl_calendar(2019)
 }\if{html}{\out{</div>}}
 }
 }
